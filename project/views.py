@@ -1,19 +1,11 @@
-from project.models import Account
 from django.http import HttpResponse
-from django.shortcuts import render
-from django.db import connection
 
 # Create your views here.
 def index(request):
-    #return HttpResponse("Hello, world. You're at the login index.")
-    cursor = connection.cursor()
-    cursor.execute('select* from Account')
-    query = 'select* from Account'
-    #return render(cursor.fetchall())
-    return render(Account.objects.raw(query))
+    return HttpResponse("Entro a index.")
 
-def employee(request):
-    return HttpResponse("Hello, world. You're at the employee view.")
+def manager(request, adminid):
+    return HttpResponse("You're in admin view.")
 
-def worker(request, empid):
-    return HttpResponse("Hello, world. You're at the worker view." )
+def employee(request, empid):
+    return HttpResponse("You're in employees view.")
