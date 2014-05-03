@@ -4,6 +4,6 @@ from project import views
 
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
-    url(r'^manager/(?P<adminid>\d+)', views.manager, name='manager'),
-    url(r'^employee/(?P<empid>\d+)', views.employee, name='employee'),
+    url(r'^(?P<adminid>\d+)/manager/', views.manager, name='manager'),
+    url(r'employee/', views.employee, name='employee'),
 )

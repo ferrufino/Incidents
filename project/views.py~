@@ -1,12 +1,14 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.template import RequestContext, loader
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Hello, world. You're at the login index.")
+    template = loader.get_template('/index.html')
+    context = RequestContext(request)
+    return HttpResponse(template.render(context))
 
-def employee(request, adminid):
-    return HttpResponse("Hello, world. You're at the employee view.")
+def manager(request, adminid):
+    return HttpResponse("You're in admin view.")
 
-def worker(request, empid):
-    return HttpResponse("Hello, world. You're at the worker view." )
+def employee(request, empid):
+    return HttpResponse("You're in employees view.")
