@@ -7,3 +7,20 @@
     background: #fff;
     border: 1px solid #ccc;
 }
+
+  div.row {
+        border: 1px solid;
+      }
+
+ body {
+        padding-top: 20px;
+        padding-bottom: 40px;
+      }
+.container {
+        width: 960px;
+      }
+
+#lgbody{
+  background: #eee url(http://subtlepatterns.com/patterns/sativa.png);
+
+}
