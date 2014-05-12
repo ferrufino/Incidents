@@ -11,7 +11,7 @@ def index(request):
     context = RequestContext(request)
     return HttpResponse(template.render(context))
 
-def manager(request, adminid):
+def manager(request):
     template = loader.get_template('project/manager.html')
     return render(request, "project/manager.html", {"table": Account.objects.raw("SELECT * FROM Account")})
     #return HttpResponse("You're in admin view.")
