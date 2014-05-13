@@ -19,8 +19,11 @@ def results(request, poll_id):
     return render(request, 'polls/results.html', {'poll': poll})
 def manager(request):
 	user = request.POST.get('Username','') #trae eel dato de username de la forma
+	if not user: # pongo cosas random por si le das reload y no truene abajo
+		user= "papapapa";
 	bol = Account.objects.filter(username = user) #llenar con el query si existe el usuario
-	if bol:
+	papa = Account.objects.raw("SELECT * FROM Account where Username=%s",user)
+	if len(list(papa)):
 		template = loader.get_template('project/manager.html')
 		return render(request, "project/manager.html", {"table": Account.objects.raw("SELECT * FROM Account")})
 	else:
