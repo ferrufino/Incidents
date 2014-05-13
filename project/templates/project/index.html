@@ -34,9 +34,10 @@
 <div class="container" >
   <div class="">
   	<div class="login-container">
-	   <form class="LoginServlet" role="form">
-	      <h2 class="form-signin-heading">Welcome.</h2>
-	      <input type="Username" class="form-control" placeholder="Username" >
+	   <form  action="/index/manager/" method="post" class="LoginServlet" role="form">
+	      {% csrf_token %}
+		  <h2 class="form-signin-heading">Welcome.</h2>
+	      <input type="Username" name="Username" class="form-control" placeholder="Username" >
 	     <input type="password" class="form-control" placeholder="Password" >
 	     <label class="checkbox">
 	     </label>
