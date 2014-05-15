@@ -16,8 +16,8 @@ from django.db import models
 class Account(models.Model):
     username = models.CharField(db_column='Username', primary_key=True, max_length=15) # Field name made lowercase.
     type = models.CharField(max_length=15, blank=True)
-    def __unicode__(self):
-       return self.username
+    def __str__(self):
+       return str(self.username)
     class Meta:
         managed = False
         db_table = 'Account'
@@ -31,7 +31,7 @@ class Administrator(models.Model):
     phone = models.CharField(max_length=10, blank=True)
     username = models.ForeignKey(Account, db_column='Username', blank=True, null=True) # Field name made lowercase.
     def __str__(self):
-       return self.username
+       return str(self.username)
     class Meta:
         managed = False
         db_table = 'Administrator'
@@ -44,7 +44,7 @@ class Client(models.Model):
     phone = models.CharField(max_length=15, blank=True)
     username = models.ForeignKey(Account, db_column='Username', blank=True, null=True) # Field name made lowercase.
     def __str__(self):
-       return self.username
+       return str(self.username)
     class Meta:
         managed = False
         db_table = 'Client'
@@ -53,7 +53,7 @@ class Department(models.Model):
     deptid = models.CharField(db_column='DeptID', primary_key=True, max_length=1) # Field name made lowercase.
     deptname = models.CharField(db_column='DeptName', max_length=15, blank=True) # Field name made lowercase.
     def __unicode__(self):
-       return self.deptname
+       return unicode(self.deptname)
     class Meta:
         managed = False
         db_table = 'Department'
@@ -67,7 +67,7 @@ class Employee(models.Model):
     deptid = models.ForeignKey(Department, db_column='DeptID', blank=True, null=True) # Field name made lowercase.
     username = models.ForeignKey(Account, db_column='Username', blank=True, null=True) # Field name made lowercase.
     def __str__(self):
-       return self.username
+       return str(self.username)
     class Meta:
         managed = False
         db_table = 'Employee'
@@ -83,7 +83,7 @@ class Incident(models.Model):
     adminid = models.ForeignKey(Administrator, db_column='AdminID', blank=True, null=True) # Field name made lowercase.
     datesubmitted = models.DateField(db_column='DateSubmitted', blank=True, null=True) # Field name made lowercase.
     def __unicode__(self):
-       return self.incidentid
+       return unicode(self.incidentid)
     class Meta:
         managed = False
         db_table = 'Incident'
@@ -96,8 +96,21 @@ class IncidentHistory(models.Model):
     dateworked = models.DateField(db_column='DateWorked', blank=True, null=True) # Field name made lowercase.
     description = models.CharField(max_length=144, blank=True)
     def __str__(self):
-       return self.incidentid
+       return str(self.incidentid)
     class Meta:
         managed = False
         db_table = 'IncidentHistory'
+
+class IncidentSummary(models.Model):
+    incidentid = models.CharField(db_column='IncidentId', primary_key=True, max_length=10) # Field name made lowercase.
+    description = models.CharField(max_length=144, blank=True)
+    peopleworking = models.BigIntegerField(db_column='peopleWorking') # Field name made lowercase.
+    minutesworked = models.DecimalField(db_column='minutesWorked', max_digits=35, decimal_places=4, blank=True, null=True) # Field name made lowercase.
+    hoursworked = models.DecimalField(db_column='hoursWorked', max_digits=35, decimal_places=4, blank=True, null=True) # Field name made lowercase.
+    def __unicode__(self):
+       return unicode(self.IncidentId)
+    class Meta:
+        managed = False
+        db_table = 'incidentsummary'
+
 
