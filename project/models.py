@@ -73,7 +73,7 @@ class Employee(models.Model):
         db_table = 'Employee'
 
 class Incident(models.Model):
-    incidentid = models.CharField(db_column='IncidentId', primary_key=True, max_length=10) # Field name made lowercase.
+    incidentid = models.IntegerField(db_column='IncidentId', primary_key=True) # Field name made lowercase.
     type = models.CharField(max_length=15, blank=True)
     status = models.CharField(max_length=15, blank=True)
     urgency = models.IntegerField(blank=True, null=True)

@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 from django.shortcuts import render, render_to_response
-from project.models import Incident, Account, IncidentSummary, Client
+from project.models import Incident, Account, IncidentSummary, Client, Employee
 from django.db import connection
 from project.forms import TicketForm
 
@@ -24,7 +24,7 @@ def manager(request):
     if not usern: # pongo cosas random por si le das reload y no truene abajo
         usern= "papapapa"
     bol = Account.objects.filter(username = usern) #llenar con el query si existe el usuario
-    papa = Account.objects.raw("SELECT * FROM Account where Username=%s", [usern])
+    papa = Account.objects.raw("SELECT * FROM Account where Username=%s and type='Administrator'", [usern])
     if len(list(papa)):
         template = loader.get_template('project/manager.html')
         return render(request, "project/manager.html", {"table": IncidentSummary.objects.raw("SELECT * FROM IncidentSummary")})
@@ -33,7 +33,7 @@ def manager(request):
         context = RequestContext(request)
         return HttpResponse(template.render(context))
 
-def employee(request, empid):
+def employee(request):
     return HttpResponse("You're in employees view.")
 
 def allTickets(request):
@@ -46,18 +46,18 @@ def registerTicket(request):
     if request.method == 'POST':
         form = TicketForm(request.POST)
         if form.is_valid():
-            iID = form.cleaned_data['incidentId']
+            #iID = form.cleaned_data['incidentId']
             typ = form.cleaned_data['type']
             urg = form.cleaned_data['urgency']
             imp = form.cleaned_data['impact']
             desc = form.cleaned_data['description']
             usern = form.cleaned_data['username']
 
-            #uID = Client.objects.raw("SELECT ClientID FROM CLient WHERE Username=%s", [usern])
+            #uID = Client.objects.raw("SELECT ClientID FROM Client WHERE Username=%s", [usern])[0]
             uID = Client.objects.get(username=usern)
             cursor = connection.cursor()
             
-            Incident.objects.create(incidentid=iID, type=typ, status='submitted', urgency=urg, impact=imp, description=desc, clientid=uID)
+            Incident.objects.create(type=typ, status='submitted', urgency=urg, impact=imp, description=desc, clientid=uID)
 
             #Esto aun no funciona, de mientras se agrega con el codigo de arriba
             #cursor.execute('''INSERT INTO Incident VALUES( 
@@ -71,7 +71,6 @@ def registerTicket(request):
         form = TicketForm()
 
     return render(request, 'project/registerTicket.html', {'form': form,})
-
 
 
 
