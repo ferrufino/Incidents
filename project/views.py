@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 from django.shortcuts import render, render_to_response
 from project.models import Incident, Account, IncidentSummary, Client
@@ -46,21 +46,27 @@ def registerTicket(request):
     if request.method == 'POST':
         form = TicketForm(request.POST)
         if form.is_valid():
-            iID = form.cleaned_data['IncidentId']
-            type = form.cleaned_data['type']
+            iID = form.cleaned_data['incidentId']
+            typ = form.cleaned_data['type']
             urg = form.cleaned_data['urgency']
             imp = form.cleaned_data['impact']
             desc = form.cleaned_data['description']
             usern = form.cleaned_data['username']
 
-            uID = Client.objects.raw("SELECT ClientID FROM CLient WHERE Username=%s", [usern])
-
+            #uID = Client.objects.raw("SELECT ClientID FROM CLient WHERE Username=%s", [usern])
+            uID = Client.objects.get(username=usern)
             cursor = connection.cursor()
-            cursor.execute('''INSERT INTO Incident VALUES( 
-                           %s, %s, 'submitted', %s, %s, %s,
-                           %s, null, CURDATE()
-                           ) ''', [iID, type, urg, imp, desc, uID])
-            return HttpResponseRedirect('/project/allTickets')
+            
+            Incident.objects.create(incidentid=iID, type=typ, status='submitted', urgency=urg, impact=imp, description=desc, clientid=uID)
+
+            #Esto aun no funciona, de mientras se agrega con el codigo de arriba
+            #cursor.execute('''INSERT INTO Incident VALUES( 
+             #              %s, %s, 'submitted', %s, %s, %s,
+              #             %s, null, null
+               #            ) ''', [iID, type, urg, imp, desc, usern])
+            
+            return HttpResponseRedirect('/index/allTickets')
+
     else:
         form = TicketForm()
 
