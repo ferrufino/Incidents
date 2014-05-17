@@ -70,7 +70,7 @@ def registerTicket(request):
     else:
         form = TicketForm()
 
-    return render(request, 'project/manager.html', {'form': form,})
+    return render(request, 'project/registerTicket.html', {'form': form,})
 
 
 
