@@ -30,7 +30,7 @@
 
  <nav class="navbar navbar-default" role="navigation">
 <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="nuv" style="background-color:#690000;">
+      <div class="nuv" style="background-color:#404040;">
         <a class="navbar-brand navbar-header" href="#" style="color:white;">Incident Manager</a>
           <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
@@ -44,11 +44,15 @@
 <div class="tabs">
     <ul class="tab-links">
         <li class="active"><a href="#tab1">Incidents</a></li>
-        <li><a href="#tab2">Active Incidents</a></li>
-        <li><a href="#tab3">Historial</a></li>
+        <li><a href="#tab2">Assign</a></li>
+        <li><a href="#tab3">Active Incidents</a></li>
+        <li><a href="#tab4">Historial</a></li>
+        <li><a href="#tab5">Mas info</a></li>
     </ul>
  
     <div class="tab-content">
+    
+    
         <div id="tab1" class="tab active">
 
         <!-- EJEMPLO DE CARD -->
@@ -111,19 +115,26 @@
     </div>
 </div>
 <!-- FIN-->
-
-
         </div>
  
-        <div id="tab2" class="tab">
+       <div id="tab2" class="tab">
             <p>Tab #2 content goes here!</p>
             <p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum risus ornare mollis. In hac habitasse platea dictumst. Ut euismod tempus hendrerit. Morbi ut adipiscing nisi. Etiam rutrum sodales gravida! Aliquam tellus orci, iaculis vel.</p>
         </div>
- 
+        
         <div id="tab3" class="tab">
+            <p>Tab #3 content goes here!</p>
+            <p>Donec pulvinar neque sed semper lacinia. Curabitur lacinia ullamcorper nibh; quis imperdiet velit eleifend ac. Donec blandit mauris eget aliquet lacinia! Donec pulvinar massa interdum risus ornare mollis. In hac habitasse platea dictumst. Ut euismod tempus hendrerit. Morbi ut adipiscing nisi. Etiam rutrum sodales gravida! Aliquam tellus orci, iaculis vel.</p>
+        </div>
+ 
+        <div id="tab4" class="tab">
 	  {% render_table table %} 
         </div>
+         <div id="tab5" class="tab">
+             {% render_table table %}    </div>
     </div>
+    
+
 </div>
 
 
