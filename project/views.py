@@ -31,7 +31,8 @@ def manager(request):
         template = loader.get_template('project/manager.html')
         return render(request, "project/manager.html", {"table": IncidentSummary.objects.raw("SELECT * FROM IncidentSummary")})
     elif len(list(papa2)):
-		return HttpResponse(papa2)
+        template = loader.get_template('project/employee.html')
+        return render(request, "project/employee.html", {"table": IncidentSummary.objects.raw("SELECT * FROM IncidentSummary")})
     else:
         template = loader.get_template('project/index.html')
         context = RequestContext(request)
