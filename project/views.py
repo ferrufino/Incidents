@@ -4,6 +4,7 @@ from django.shortcuts import render, render_to_response
 from project.models import Incident, Account, IncidentSummary, Client, Employee
 from django.db import connection
 from project.forms import TicketForm, AssignEmployee
+from django.views.generic.edit import FormView
 
 
 # Create your views here.
@@ -37,40 +38,37 @@ def employee(request):
     return HttpResponse("You're in employees view.")
 
 def allTickets(request):
-    template = loader.get_template('project/registerTicket.html')
+    template = loader.get_template('project/allTickets.html')
     #return HttpResponse("You should see every ticket in here")
-    return render(request, "project/registerTicket.html", {"table2": Incident.objects.all()})
+    return render(request, "project/allTickets.html", {"table2": Incident.objects.all(), "formReg" : RegisterTicket()})
 
-def registerTicket(request):
+class RegisterTicket(FormView):
     #return HttpResponse("This is the ticket creation form")
-    if request.method == 'POST':
-        form = TicketForm(request.POST)
-        if form.is_valid():
-            #iID = form.cleaned_data['incidentId']
-            typ = form.cleaned_data['type']
-            urg = form.cleaned_data['urgency']
-            imp = form.cleaned_data['impact']
-            desc = form.cleaned_data['description']
-            usern = form.cleaned_data['username']
+    template_name = 'project/registerTicket.html'
+    form_class = TicketForm
+    success_url = '/index/'
 
-            cursor = connection.cursor()
-            cursor.execute("SELECT ClientID FROM Client WHERE Username=%s", [usern])
-            uID = cursor.fetchone()
+    def form_valid(self, form):
+        typ = form.cleaned_data['type']
+        urg = form.cleaned_data['urgency']
+        imp = form.cleaned_data['impact']
+        desc = form.cleaned_data['description']
+        usern = form.cleaned_data['username']
 
-            cursor2 = connection.cursor()
-            cursor2.execute('''INSERT INTO Incident VALUES( 
-                           DEFAULT, %s, 'submitted', %s, %s, %s,
-                           %s, null, CURDATE()
-                           ) ''', [typ, urg, imp, desc, uID])
+        cursor = connection.cursor()
+        cursor.execute("SELECT ClientID FROM Client WHERE Username=%s", [usern])
+        uID = cursor.fetchone()
+
+        cursor2 = connection.cursor()
+        cursor2.execute('''INSERT INTO Incident VALUES( 
+                        DEFAULT, %s, 'submitted', %s, %s, %s,
+                        %s, null, CURDATE()
+                        ) ''', [typ, urg, imp, desc, uID])
             
-            return HttpResponseRedirect('/index/registerTicket')
+        return super(RegisterTicket, self).form_valid(form);
 
-    else:
-        form = TicketForm()
 
-    return render(request, 'project/registerTicket.html', {'form': form,})
-
-def AssignEmployee(request):
+def AssignEmployee(FormView):
     #return HttpResponse("This is the ticket creation form")
     if request.method == 'POST':
         form = AssignEmployee(request.POST)
