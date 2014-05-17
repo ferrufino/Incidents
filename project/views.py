@@ -3,7 +3,7 @@ from django.template import RequestContext, loader
 from django.shortcuts import render, render_to_response
 from project.models import Incident, Account, IncidentSummary, Client, Employee
 from django.db import connection
-from project.forms import TicketForm
+from project.forms import TicketForm, AssignEmployee
 
 
 # Create your views here.
@@ -37,9 +37,9 @@ def employee(request):
     return HttpResponse("You're in employees view.")
 
 def allTickets(request):
-    template = loader.get_template('project/allTickets.html')
+    template = loader.get_template('project/registerTicket.html')
     #return HttpResponse("You should see every ticket in here")
-    return render(request, "project/allTickets.html", {"table2": Incident.objects.all()})
+    return render(request, "project/registerTicket.html", {"table2": Incident.objects.all()})
 
 def registerTicket(request):
     #return HttpResponse("This is the ticket creation form")
@@ -53,17 +53,15 @@ def registerTicket(request):
             desc = form.cleaned_data['description']
             usern = form.cleaned_data['username']
 
-            #uID = Client.objects.raw("SELECT ClientID FROM Client WHERE Username=%s", [usern])[0]
-            uID = Client.objects.get(username=usern)
             cursor = connection.cursor()
-            
-            Incident.objects.create(type=typ, status='submitted', urgency=urg, impact=imp, description=desc, clientid=uID)
+            cursor.execute("SELECT ClientID FROM Client WHERE Username=%s", [usern])
+            uID = cursor.fetchone()
 
-            #Esto aun no funciona, de mientras se agrega con el codigo de arriba
-            #cursor.execute('''INSERT INTO Incident VALUES( 
-             #              %s, %s, 'submitted', %s, %s, %s,
-              #             %s, null, null
-               #            ) ''', [iID, type, urg, imp, desc, usern])
+            cursor2 = connection.cursor()
+            cursor2.execute('''INSERT INTO Incident VALUES( 
+                           DEFAULT, %s, 'submitted', %s, %s, %s,
+                           %s, null, CURDATE()
+                           ) ''', [typ, urg, imp, desc, uID])
             
             return HttpResponseRedirect('/index/registerTicket')
 
@@ -71,6 +69,34 @@ def registerTicket(request):
         form = TicketForm()
 
     return render(request, 'project/registerTicket.html', {'form': form,})
+
+def AssignEmployee(request):
+    #return HttpResponse("This is the ticket creation form")
+    if request.method == 'POST':
+        form = AssignEmployee(request.POST)
+        if form.is_valid():
+            iID = form.cleaned_data['incidentId']
+            usern = form.cleaned_data['username']
+
+
+            #uID = Client.objects.raw("SELECT ClientID FROM Client WHERE Username=%s", [usern])[0]
+            eID = Employee.objects.get(username=usern)
+            cursor2 = connection.cursor()
+            
+            IncidentHistory.objects.create(incidentid=iID, empID=eID)
+
+            #Esto aun no funciona, de mientras se agrega con el codigo de arriba
+            #cursor2.execute('''INSERT INTO Incident VALUES( 
+             #              %s, %s, 'submitted', %s, %s, %s,
+              #             %s, null, null
+               #            ) ''', [iID, type, urg, imp, desc, usern])
+            
+            return HttpResponseRedirect('/index/allTickets')
+
+    else:
+        form = TicketForm()
+
+    return render(request, 'project/allTickets.html', {'form2': form,})
 
 
 
