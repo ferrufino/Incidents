@@ -51,9 +51,15 @@
     <div class="tab-content">
         <div id="tab1" class="tab active">
 <div class="container">
- <form action="/index/registerTicket/" method="post">{% csrf_token %}
-{{ form.as_p }}
-<input type="submit" value="Submit" />
+ <form action="/index/registerTicket/" method="post"><input type='hidden' name='csrfmiddlewaretoken' value='hpdNVXPSiBhiq1DLi3sbMBRpQp2vmWtb' />
+        <p><label for="id_type">Type:</label> <input id="id_type" maxlength="15" name="type" type="text" /></p>
+<p><label for="id_urgency">Urgency:</label> <input id="id_urgency" name="urgency" type="number" /></p>
+<p><label for="id_impact">Impact:</label> <input id="id_impact" name="impact" type="number" /></p>
+<p><label for="id_description">Description:</label> <input id="id_description" maxlength="100" name="description" type="text" /></p>
+<p><label for="id_username">Username:</label> <input id="id_username" maxlength="15" name="username" type="text" /></p>
+        <input type="submit" value="Submit" />
+        </form>
+
 </form>
 </div>
         </div>
