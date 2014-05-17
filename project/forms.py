@@ -8,6 +8,6 @@ class TicketForm(forms.Form):
     description = forms.CharField(max_length=100)
     username = forms.CharField(max_length=15)
 
-class AssignEmployee(forms.Form):
-    incidentId = forms.IntegerField(widget=forms.TextInput())
-    username = forms.CharField(widget=forms.TextInput(), max_length=15)
+class AssignForm(forms.Form):
+    incidentId = forms.IntegerField()
+    username = forms.CharField(max_length=15)
