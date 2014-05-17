@@ -55,8 +55,8 @@ class ManagerView(View):
 class EmployeeView(View):
     template_name = 'project/employee.html'
     def get(self,request, empid):
-        return HttpResponse("You're in employees view.")
-        #eturn render(papa in request.GET)
+        return render(request, 'project/employee.html')
+        #return render(papa in request.GET)
 
 
 def allTickets(request):
