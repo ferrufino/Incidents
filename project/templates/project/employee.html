@@ -1,0 +1,76 @@
+{% load render_table from django_tables2 %}
+<!doctype html>
+<html>
+    <head>
+    <title>DataBase Final Project</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://rawgithub.com/ferrufino/Incidents/master/project/templates/project/assets/index.css" />
+   <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
+<script src="http://code.jquery.com/jquery-latest.min.js"
+        type="text/javascript"></script>
+<script> $(document).ready(function() {
+    $('.tabs .tab-links a').on('click', function(e)  {
+        var currentAttrValue = $(this).attr('href');
+ 
+        // Show/Hide Tabs
+        $('.tabs ' + currentAttrValue).show().siblings().hide();
+ 
+        // Change/remove current tab to active
+        $(this).parent('li').addClass('active').siblings().removeClass('active');
+ 
+        e.preventDefault();
+    });
+}); </script>
+<script> 
+    $(function(){
+      $("#iC").load(""); 
+    });
+    </script> 
+    </head>
+ <body>
+
+ <nav class="navbar navbar-default" role="navigation">
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="nuv" style="background-color:#690000;">
+        <a class="navbar-brand navbar-header" href="#" style="color:white;">Incident Employee</a>
+          <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+             </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+</nav>
+
+<div class="tabs">
+    <ul class="tab-links">
+        <li class="active"><a href="#tab1">Incidents Assigned</a></li>   
+    </ul>
+ 
+    <div class="tab-content">
+        <div id="tab1" class="tab active">
+	  		<div class="container">
+
+	   <!-- <div id="iC"></div> -->
+	  </div>
+        </div>
+ 
+    </div>
+</div>
+
+
+
+
+
+  </body>
+</html>
+
+
+
+
+
+
+
