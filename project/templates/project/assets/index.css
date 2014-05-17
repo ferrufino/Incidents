@@ -19,7 +19,14 @@ body{
 background-color: #690000;
 border-color: #690000;
 }
-
+/*----- labels assign -----*/
+.auth label.label-floatlabel {
+  font-weight: 300;
+  font-size: 11px;
+  color:#fff;
+  left:0!important;
+  top: 1px!important;
+}
 /*----- Tabs -----*/
 .tabs {
     width:100%;
