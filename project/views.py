@@ -65,12 +65,12 @@ def registerTicket(request):
               #             %s, null, null
                #            ) ''', [iID, type, urg, imp, desc, usern])
             
-            return HttpResponseRedirect('/index/allTickets')
+            return HttpResponseRedirect('/index/manager')
 
     else:
         form = TicketForm()
 
-    return render(request, 'project/registerTicket.html', {'form': form,})
+    return render(request, 'project/manager.html', {'form': form,})
 
 
 
