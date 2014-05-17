@@ -12,7 +12,19 @@
    <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css" />
 <script src="http://code.jquery.com/jquery-latest.min.js"
         type="text/javascript"></script>
-<link rel="stylesheet" href="https://rawgithub.com/ferrufino/Incidents/master/project/templates/project/assets/manager.js" />
+<script> $(document).ready(function() {
+    $('.tabs .tab-links a').on('click', function(e)  {
+        var currentAttrValue = $(this).attr('href');
+ 
+        // Show/Hide Tabs
+        $('.tabs ' + currentAttrValue).show().siblings().hide();
+ 
+        // Change/remove current tab to active
+        $(this).parent('li').addClass('active').siblings().removeClass('active');
+ 
+        e.preventDefault();
+    });
+}); </script>
     </head>
  <body>
 
