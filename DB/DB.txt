@@ -1,0 +1,116 @@
+drop database dbproject;
+create database dbProject;
+ use dbProject;
+create table Department(
+	DeptID char(1),
+	DeptName varchar(15),
+	primary key(DeptID)
+	);
+create table Account(
+	Username varchar(15),
+	type varchar(15),
+	primary key(Username)
+	);
+create table Employee(
+	EmpId char(9),
+	FName varchar(15),
+	LName varchar(15),
+	email varchar(30),
+	phone char(10),
+	DeptID char(1),
+	Username varchar(15),
+	primary key(EmpId),
+	foreign key(DeptID) references Department(DeptID),
+	foreign key(Username) references Account(Username)
+	);
+create table Administrator(
+	AdminID char(9),
+	FName varchar(15),
+	LName varchar(15),
+	email varchar(30),
+	phone char(10),
+	Username varchar(15),
+	primary key(AdminID),
+	foreign key(Username) references Account(Username)
+	);
+create table Client(
+	ClientId char(9),
+	FName varchar(15),
+	LName varchar(15),
+	email varchar(30),
+	phone char(15),
+	Username varchar(15),
+	primary key(ClientId),
+	foreign key(Username) references Account(Username)
+	);
+create table Incident(
+	IncidentId int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	type varchar(15),
+	status varchar(15),
+	urgency int,
+	impact int,
+	description varchar(144),
+	ClientId char(9),
+	AdminID char(9),
+	DateSubmitted date,
+	primary key(IncidentId),
+	foreign key(ClientId) references Client(ClientId),
+	foreign key(AdminID) references Administrator(AdminID)
+	);
+create table IncidentHistory(
+	IncidentId int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	EmpId char(9),
+	TimeStart time(3),
+	TimeEnd time(3),
+	DateWorked date,
+	description varchar(144),
+	primary key(IncidentId, EmpId),
+	foreign key(IncidentId) references Incident(IncidentId),
+	foreign key(EmpId) references Employee(EmpId)
+	);
+insert into Department values(1, 'IT');
+insert into Department values(2, 'Maintenance');
+insert into Account values ('jamesborg', 'Employee');
+insert into Account values ('wong', 'Employee');
+insert into Account values ('juanp', 'Employee');
+insert into Account values ('jenwallace', 'Employee');
+insert into Account values ('azelaya', 'Administrator');
+insert into Account values ('ramash', 'Administrator');
+insert into Account values ('joyeng', 'Client');
+insert into Account values ('jabbar', 'Client');
+insert into Account values ('jRamirez', 'Client');
+insert into Employee values (123456789, 'James', 'Borg', 
+'james@itesm.mx', 0811234567, 1, 'jamesborg');
+insert into Employee values (111222333, 'Franklin', 'Wong', 
+'fwong@itesm.mx', 0813334444, 1, 'wong');
+insert into Employee values (987654321, 'Juan', 'Perez', 
+'juanperez@itesm.mx', 0815556789, 2, 'juanp');
+insert into Employee values (888123456, 'Jennifer', 'Wallace', 
+'jwallace@itesm.mx', 0819082344, 2, 'jenwallace');
+insert into Administrator values (999888777,'Alicia', 'Zelaya',
+'alicia.zelaya@itesm.mx', 0812224444, 'azelaya');
+insert into Administrator values (000811234,'Ramash', 'Narayan',
+'r_nayaran@itesm.mx', 0810001111, 'ramash');
+insert into Client values (000804060,'Joyce', 'English', 
+'joyce_english@gmail.com', 0815670000, 'joyeng');
+insert into Client values (001814060,'Ahmad', 'Jabbar', 
+'001814060@itesm.com', 0817778888, 'jabbar');
+insert into Client values (001824460,'Jose', 'Ramirez', 
+'001824460@itesm.com', 0819992222, 'jRamirez');
+create view IncidentSummary as
+select I.IncidentId, I.description, count(H.EmpID) as peopleWorking, 
+    sum(time_to_sec(subtime(H.TimeEnd, H.TimeStart))/60) as minutesWorked, 
+    sum(time_to_sec(subtime(H.TimeEnd, H.TimeStart))/3600) as hoursWorked
+from Incident I, IncidentHistory H
+where I.IncidentId = H.IncidentId
+group by I.IncidentId;
+insert into Incident values (1, 'Computer Issue', 'submitted',
+ 2, 3, 'computer wont boot up', 000804060, null, '2014-03-14');
+insert into IncidentHistory values (1, 888123456, '10:30', '11:30',
+'2014-03-14', 'still not working');
+insert into IncidentHistory values (1, 111222333, '14:30', '15:50',
+'2014-03-15', 'problem fixed');
+insert into Incident values (2, 'Leak', 'submitted',
+ 2, 3, "water leak in bathroom 2", 001814060, null, '2014-05-12');
+insert into IncidentHistory values (2, 987654321, '9:30', '10:00',
+'2014-05-13', 'leak fixed');
