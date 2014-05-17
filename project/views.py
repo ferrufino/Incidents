@@ -3,7 +3,7 @@ from django.template import RequestContext, loader
 from django.shortcuts import render, render_to_response
 from project.models import Incident, Account, IncidentSummary, Client, Employee
 from django.db import connection
-from project.forms import TicketForm, AssignEmployee
+from project.forms import TicketForm, AssignForm
 from django.views.generic.edit import FormView, View
 
 
@@ -76,24 +76,27 @@ class RegisterTicket(FormView):
         return super(RegisterTicket, self).form_valid(form);
 
 
-def AssignEmployee(FormView):
+class AssignEmployee(FormView):
     template_name = 'project/AssignEmployee.html'
     form_class = AssignForm
     success_url = '/index/manager/'
 
     def form_valid(self, form):
-        typ = form.cleaned_data['type']
-        usern = form.cleaned_data['urgency']
+        iID = form.cleaned_data['incidentId']
+        usern = form.cleaned_data['username']
 
         cursor = connection.cursor()
-        cursor.execute("SELECT ClientID FROM Client WHERE Username=%s", [usern])
+        cursor.execute("SELECT EmpID FROM Employee WHERE Username=%s", [usern])
         uID = cursor.fetchone()
 
         cursor2 = connection.cursor()
         cursor2.execute('''INSERT INTO IncidentHistory VALUES( 
-                        DEFAULT, %s, 'submitted', %s, %s, %s,
-                        %s, null, CURDATE()
-                        ) ''', [typ, urg, imp, desc, uID])
+                        %s, %s, NULL, NULL, NULL, NULL
+                        ) ''', [iID, uID])
+
+        
+        cursor3 = connection.cursor()
+        cursor3.execute("UPDATE Incident SET Status='assigned' WHERE IncidentId=%s", [iID])
             
         return super(AssignEmployee, self).form_valid(form);
 
