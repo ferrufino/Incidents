@@ -26,9 +26,12 @@ def manager(request):
         usern= "papapapa"
     bol = Account.objects.filter(username = usern) #llenar con el query si existe el usuario
     papa = Account.objects.raw("SELECT * FROM Account where Username=%s and type='Administrator'", [usern])
+    papa2 = Account.objects.raw("SELECT * FROM Account where Username=%s and type='Employee'", [usern])
     if len(list(papa)):
         template = loader.get_template('project/manager.html')
         return render(request, "project/manager.html", {"table": IncidentSummary.objects.raw("SELECT * FROM IncidentSummary")})
+    elif len(list(papa2)):
+		return HttpResponse(papa2)
     else:
         template = loader.get_template('project/index.html')
         context = RequestContext(request)
