@@ -8,7 +8,7 @@ class TicketForm(forms.Form):
     impact = forms.IntegerField()
     description = forms.CharField(max_length=100)
     username = forms.CharField(max_length=15)
-    adminid = forms.CharField()
+    #adminid = forms.CharField()
 
 
 class AssignForm(forms.Form):

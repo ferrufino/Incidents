@@ -73,6 +73,8 @@ class RegisterTicket(FormView):
     #return HttpResponse("This is the ticket creation form")
     template_name = 'project/registerTicket.html'
     form_class = TicketForm
+    #adminid = reverse('RegisterTicket')
+    #success_url = reverse ('Manager', args={adminid})
     success_url = '/index/manager'
 
     def form_valid(self, form):
@@ -89,7 +91,7 @@ class RegisterTicket(FormView):
         cursor2 = connection.cursor()
         cursor2.execute('''INSERT INTO Incident VALUES( 
                         DEFAULT, %s, 'submitted', %s, %s, %s,
-                        %s, null, CURDATE()
+                        %s, null, CURDATE(), null
                         ) ''', [typ, urg, imp, desc, uID])
             
         return super(RegisterTicket, self).form_valid(form);
