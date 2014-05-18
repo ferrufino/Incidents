@@ -73,9 +73,15 @@ class RegisterTicket(FormView):
     #return HttpResponse("This is the ticket creation form")
     template_name = 'project/registerTicket.html'
     form_class = TicketForm
-    #adminid = reverse('RegisterTicket')
+    adminid = ''
     #success_url = reverse ('Manager', args={adminid})
-    success_url = '/index/manager'
+
+
+    def post(self, request, adminid):
+        #adminid = request.GET.get('adminid', 'kkjhkjg')
+        url = '/index/manager/' + adminid
+        return HttpResponseRedirect(url)
+
 
     def form_valid(self, form):
         typ = form.cleaned_data['type']
@@ -94,6 +100,8 @@ class RegisterTicket(FormView):
                         %s, null, CURDATE(), null
                         ) ''', [typ, urg, imp, desc, uID])
             
+
+
         return super(RegisterTicket, self).form_valid(form);
 
 
