@@ -232,11 +232,42 @@
                         </div>
                         </div>
                         <div id="tab3" class="tab">
+                            <div class="container">
+                                <div class="row">
+                                    
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            
+                                            <h4 class="page-header">Id of Incident to be closed</h4>
+                                            <form role="form" action="/index/AssignEmployee/">
+                                                <div class="form-group float-label-control">
+                                                    <label for="id_incidentId">Number of Incident</label>
+                                                    <input id="id_incidentId" maxlength="9" name="username"type="number" class="form-control" placeholder="Number of Incident">
+                                                        </div>
+                                                    <div class="col-md-12 text-right">
+                                                    <button type="submit" class="btn btn-primary btn-lg" value="Submit">Submit</button>
+                                                    <br>
+                                                </div>
+                                            </form>
+                                            
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                    
+                                </div>
+                            </div>
+                            <br>
+                            <div style="padding-left:80px">
                             {% render_table open_incidents %}
+                            </div>
                         </div>
                         
                         <div id="tab4" class="tab">
+                             <div style="padding-left:200px">
                             {% render_table closed_incidents %}
+                            </div>
                         </div>
                         <div id="tab5" class="tab">
                         </div>
