@@ -47,8 +47,13 @@ class ManagerView(View):
     template_name = 'project/manager.html'
 
     def get(self,request, adminid):
-        return render(request, "project/manager.html", {"table": IncidentSummary.objects.raw("SELECT * FROM IncidentSummary"),
-                                                        "table2": Incident.objects.all()})
+		return render(request, "project/manager.html", {"table": IncidentSummary.objects.raw("SELECT * FROM IncidentSummary"),
+															"table2": Incident.objects.all(),
+															"closed_incidents": Incident.objects.raw("SELECT * FROM Incident WHERE status='closed'"),
+															"open_incidents": Incident.objects.raw("SELECT * FROM Incident WHERE status<>'closed'"),
+															"adminid": adminid})
+        #return render(request, "project/manager.html", {"table": IncidentSummary.objects.raw("SELECT * FROM IncidentSummary"),
+        #                                                "table2": Incident.objects.all()})
 
 	#return HttpResponse("You're in manager view.")
 
