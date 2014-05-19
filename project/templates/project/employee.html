@@ -58,31 +58,31 @@
                             <div class="row">
                                 <div class="col-md-6 col-md-offset-3">
                                     <div class="well well-sm">
-                                        <form class="form-horizontal" action="/index/registerTicket/{{adminid}}" method="post">
+                                        <form class="form-horizontal" action="/index/UpdateIncident/{{empid}}" method="post">
                                             <fieldset>
                                                 <legend class="text-center">Incident Card</legend>
                                                 {% csrf_token %}
                                                 <!-- Name input-->
                                                 <div class="form-group">
-                                                    <label class="col-md-3 control-label" for="id_type">Start</label>
+                                                    <label class="col-md-3 control-label" for="id_hourStart">Start</label>
                                                     <div class="col-md-9">
-                                                        <input id="id_type" maxlength="15" name="start" type="time" placeholder="Insert start of incident" class="form-control">
+                                                        <input id="id_hourStart" maxlength="15" name="hourStart" type="time" placeholder="Insert start of incident" class="form-control">
                                                             </div>
                                                 </div>
                                                 
                                                 <!-- Urgency input-->
                                                 <div class="form-group">
-                                                    <label class="col-md-3 control-label" for="id_urgency">End</label>
+                                                    <label class="col-md-3 control-label" for="id_hourEnd">End</label>
                                                     <div class="col-md-9">
-                                                        <input id="id_urgency" name="end" type="time" placeholder="Insert end of incident" class="form-control">
+                                                        <input id="id_hourEnd" name="hourEnd" type="time" placeholder="Insert end of incident" class="form-control">
                                                             </div>
                                                 </div>
 												
 												<!-- Description -->
                                                 <div class="form-group">
-                                                    <label class="col-md-3 control-label" for="id_description">Concluded</label>
+                                                    <label class="col-md-3 control-label" for="id_concluded">Concluded</label>
                                                     <div class="col-md-9">
-                                                        <input id="id_urgency" name="concluded" type="checkbox" placeholder="Insert end of incident" class="form-control">
+                                                        <input id="id_concluded" name="concluded" type="checkbox" placeholder="Insert end of incident" class="form-control">
                                                             </div>
                                                 </div>
 												

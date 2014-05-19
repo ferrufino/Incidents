@@ -18,6 +18,7 @@ class AssignForm(forms.Form):
 class IncidentHistoryForm(forms.Form):
     hourStart = forms.TimeField();
     hourEnd = forms.TimeField();
+    concluded = forms.BooleanField()
     description = forms.CharField(max_length=100)
 
 class CloseIncidentForm(forms.Form):

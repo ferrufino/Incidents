@@ -240,10 +240,11 @@
                                         <div class="col-sm-8">
                                             
                                             <h4 class="page-header">Id of Incident to be closed</h4>
-                                            <form role="form" action="/index/CloseIncident/{{adminid}}">
+                                            <form role="form" action="/index/CloseIncident/{{adminid}}" method="post">
+                                                {% csrf_token %}
                                                 <div class="form-group float-label-control">
                                                     <label for="id_incidentId">Number of Incident</label>
-                                                    <input id="id_incidentId" maxlength="9" name="username"type="number" class="form-control" placeholder="Number of Incident">
+                                                    <input id="id_incidentId" maxlength="9" name="incidentID"type="number" class="form-control" placeholder="Number of Incident">
                                                         </div>
                                                     <div class="col-md-12 text-right">
                                                     <button type="submit" class="btn btn-primary btn-lg" value="Submit">Submit</button>
