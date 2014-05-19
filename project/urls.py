@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 from project import views
-from project.views import RegisterTicket, ManagerView, AssignEmployee, EmployeeView, CloseIncident
+from project.views import RegisterTicket, ManagerView, AssignEmployee, EmployeeView, CloseIncident, UpdateIncident
 
 
 urlpatterns = patterns('',
@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^registerTicket/(?P<adminid>\d)', RegisterTicket.as_view(), name='RegisterTicket'),
     url(r'^AssignEmployee/(?P<adminid>\d)', AssignEmployee.as_view(), name='AssignEmployee'),
     url(r'^CloseIncident/(?P<adminid>\d)', CloseIncident.as_view(), name='CloseIncident'),
+    url(r'^UpdateIncident/(?P<adminid>\d)', UpdateIncident.as_view(), name='UpdateIncident'),
     url(r'^allTickets/', views.allTickets)
 
 
