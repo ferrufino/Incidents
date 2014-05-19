@@ -207,10 +207,11 @@
                                     <div class="col-sm-8">
                                         
                                         <h4 class="page-header">Assign Incident to Employee</h4>
-                                        <form role="form" action="/index/AssignEmployee/">
+                                        <form role="form" action="/index/AssignEmployee/{{adminid}}" method="post">
+                                            {% csrf_token %}
                                             <div class="form-group float-label-control">
                                                 <label for="id_incidentId">Number of Incident</label>
-                                                <input id="id_incidentId" maxlength="9" name="username"type="number" class="form-control" placeholder="Number of Incident">
+                                                <input id="id_incidentId" maxlength="9" name="incidentId"type="number" class="form-control" placeholder="Number of Incident">
                                                     </div>
                                             
                                             <div class="form-group float-label-control">
@@ -239,7 +240,7 @@
                                         <div class="col-sm-8">
                                             
                                             <h4 class="page-header">Id of Incident to be closed</h4>
-                                            <form role="form" action="/index/AssignEmployee/">
+                                            <form role="form" action="/index/CloseIncident/{{adminid}}">
                                                 <div class="form-group float-label-control">
                                                     <label for="id_incidentId">Number of Incident</label>
                                                     <input id="id_incidentId" maxlength="9" name="username"type="number" class="form-control" placeholder="Number of Incident">

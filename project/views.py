@@ -1,9 +1,9 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 from django.shortcuts import render, render_to_response
-from project.models import Incident, Account, IncidentSummary, Client, Employee, Administrator
+from project.models import Incident, Account, IncidentSummary, Client, Employee, Administrator, IncidentHistory
 from django.db import connection
-from project.forms import TicketForm, AssignForm
+from project.forms import TicketForm, AssignForm, CloseIncidentForm
 from django.views.generic.edit import FormView, View
 from django.core.urlresolvers import reverse
 
@@ -60,7 +60,7 @@ class ManagerView(View):
 class EmployeeView(View):
     template_name = 'project/employee.html'
     def get(self,request, empid):
-        return render(request, 'project/employee.html')
+        return render(request, 'project/employee.html', {"assigned_incidents": IncidentHistory.objects.raw("SELECT* FROM IncidentHistory WHERE empid=%s", [empid]),})
         #return render(papa in request.GET)
 
 
@@ -73,8 +73,6 @@ class RegisterTicket(FormView):
     #return HttpResponse("This is the ticket creation form")
     template_name = 'project/registerTicket.html'
     form_class = TicketForm
-    adminid = ''
-    #success_url = reverse ('Manager', args={adminid})
 
 
     def post(self, request, adminid):
@@ -108,7 +106,11 @@ class RegisterTicket(FormView):
 class AssignEmployee(FormView):
     template_name = 'project/AssignEmployee.html'
     form_class = AssignForm
-    success_url = '/index/manager/'
+
+    def post(self, request, adminid):
+        #adminid = request.GET.get('adminid', 'kkjhkjg')
+        url = '/index/manager/' + adminid
+        return HttpResponseRedirect(url)
 
     def form_valid(self, form):
         iID = form.cleaned_data['incidentId']
@@ -129,7 +131,23 @@ class AssignEmployee(FormView):
             
         return super(AssignEmployee, self).form_valid(form);
 
+class CloseIncident(FormView):
+    #return HttpResponse("This is the ticket creation form")
+    template_name = 'project/CloseIncident.html'
+    form_class = CloseIncidentForm
 
+    def post(self, request, adminid):
+        #adminid = request.GET.get('adminid', 'kkjhkjg')
+        url = '/index/manager/' + adminid
+        return HttpResponseRedirect(url)
 
+    def form_valid(self, form):
+        iID = form.cleaned_data['incidentId']
 
+        cursor = connection.cursor()
+        cursor.execute("UPDATE Incident SET Status='closed' WHERE IncidentId=%s", [iID])
 
+        cursor2 = connection.cursor()
+        cursor2.execute("UPDATE Incident SET DateClosed=CURDATE() WHERE IncidentId=%s", [iID])
+
+        return super(RegisterTicket, self).form_valid(form);
