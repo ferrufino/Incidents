@@ -108,16 +108,19 @@ select I.IncidentId, I.description, count(H.EmpID) as peopleWorking,
 from Incident I, IncidentHistory H
 where I.IncidentId = H.IncidentId
 group by I.IncidentId;
-insert into Incident values (1, 'Computer Issue', 'submitted',
- 2, 3, 'computer wont boot up', 000804060, null, '2014-03-14', '2014-03-14');
-insert into Incident values (2, 'Leak', 'submitted',
- 2, 3, "water leak in bathroom 2", 001814060, null, '2014-05-12', '2014-03-14');
-insert into IncidentHistory values (1, 888123456, '10:30', '11:30',
-'2014-03-14', 'still not working');
-insert into IncidentHistory values (1, 111222333, '14:30', '15:50',
-'2014-03-15', 'problem fixed');
-insert into IncidentHistory values (2, 987654321, '9:30', '10:00',
-'2014-05-13', 'leak fixed');
+INSERT INTO `dbproject`.`incident` (`IncidentId`, `type`, `status`, `urgency`, `impact`, `description`, `ClientId`, `DateSubmitted`) VALUES ('1', 'Probelma1', 'submitted', '1', '5', 'tables', '804060', '2014-06-14');
+INSERT INTO `dbproject`.`incident` (`IncidentId`, `type`, `status`, `urgency`, `impact`, `description`, `ClientId`, `DateSubmitted`) VALUES ('2', 'Problema2', 'submitted', '1', '3', 'tables', '804060', '2014-07-14');
+INSERT INTO `dbproject`.`incident` (`IncidentId`, `type`, `status`, `urgency`, `impact`, `description`, `ClientId`, `DateSubmitted`) VALUES ('4', 'Toilet 4', 'submitted', '1', '5', 'tables', '804060', '2014-06-14');
+INSERT INTO `dbproject`.`incident` (`IncidentId`, `type`, `status`, `urgency`, `impact`, `description`, `ClientId`, `DateSubmitted`) VALUES ('5', 'Food Tables 4', 'submitted', '1', '3', 'tables', '804060', '2014-07-14');
+INSERT INTO `dbproject`.`incident` (`IncidentId`, `type`, `status`, `urgency`, `impact`, `description`, `ClientId`, `DateSubmitted`) VALUES ('3', 'Toilet 4', 'submitted', '1', '5', 'tables', '804060', '2014-06-14');
+INSERT INTO `dbproject`.`incident` (`IncidentId`, `type`, `status`, `urgency`, `impact`, `description`, `ClientId`, `DateSubmitted`) VALUES ('6', 'Food Tables 4', 'submitted', '1', '3', 'tables', '804060', '2014-07-14');
+
+INSERT INTO `dbproject`.`incidenthistory` (`IncidentId`, `EmpId`, `timesWorked`, `TimeStart`, `DateWorked`, `description`) VALUES ('1', '123456789', '1', '14:30', '2014-03-15', 'fixed');
+INSERT INTO `dbproject`.`incidenthistory` (`IncidentId`, `EmpId`, `timesWorked`, `TimeStart`, `DateWorked`, `description`) VALUES ('2', '888123456', '1', '14:30', '2014-03-15', 'fixed');
+INSERT INTO `dbproject`.`incidenthistory` (`IncidentId`, `EmpId`, `timesWorked`, `TimeStart`, `DateWorked`, `description`) VALUES ('3', '888123456', '1', '14:30', '2014-03-15', 'fixed');
+INSERT INTO `dbproject`.`incidenthistory` (`IncidentId`, `EmpId`, `timesWorked`, `TimeStart`, `DateWorked`, `description`) VALUES ('4', '888123456', '1', '14:30', '2014-03-15', 'leak fixed');
+INSERT INTO `dbproject`.`incidenthistory` (`IncidentId`, `EmpId`, `timesWorked`, `TimeStart`, `DateWorked`, `description`) VALUES ('5', '888123456', '1', '14:30', '2014-03-15', 'leak fixed');
+INSERT INTO `dbproject`.`incidenthistory` (`IncidentId`, `EmpId`, `timesWorked`, `TimeStart`, `DateWorked`, `description`) VALUES ('6', '888123456', '1', '14:30', '2014-03-15', 'fixed');
 
 create view ej1 as
 SELECT B.EmpId, A.FName, A.LName
