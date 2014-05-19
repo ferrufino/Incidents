@@ -192,16 +192,25 @@ class UpdateIncident(FormView):
     form_class = IncidentHistoryForm
 
     def post(self, request, empid):
+        iID = request.POST.get('incidentId', '')
         start = request.POST.get('startHour', '')
         end = request.POST.get('endHour', '')
         conc = request.POST.get('concluded', '')
         desc = request.POST.get('description', '')
 
         cursor = connection.cursor()
-        cursor.execute("UPDATE IncidentHistroy SET TimeStart=%s, TimeEnd=%s, DateWorked=CURDATE(), description=%s WHERE IncidentId=%s", [start, end, desc])
+        cursor.execute("UPDATE IncidentHistroy SET TimeStart=%s, TimeEnd=%s, DateWorked=CURDATE(), description=%s WHERE IncidentId=%s", [start, end, desc, iID])
 
-        #cursor2 = connection.cursor()
-        #cursor2.execute("UPDATE Incident SET DateClosed=CURDATE() WHERE IncidentId=%s", [iID])
+        if conc:
+            cursor2 = connection.cursor()
+            cursor2.execute("UPDATE Incident SET status='solved' WHERE IncidentId=%s", [iID])
 
         url = '/index/manager/' + str(empid)
         return HttpResponseRedirect(url)
+
+
+
+
+
+
+

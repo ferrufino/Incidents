@@ -16,8 +16,9 @@ class AssignForm(forms.Form):
     username = forms.CharField(max_length=15)
 
 class IncidentHistoryForm(forms.Form):
-    hourStart = forms.TimeField();
-    hourEnd = forms.TimeField();
+    incidentId = forms.IntegerField()
+    hourStart = forms.TimeField()
+    hourEnd = forms.TimeField()
     concluded = forms.BooleanField()
     description = forms.CharField(max_length=100)
 
