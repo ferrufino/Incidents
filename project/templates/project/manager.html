@@ -233,32 +233,34 @@
                         </div>
                         </div>
                         <div id="tab3" class="tab">
-                            <div class="container">
-                                <div class="row">
-                                    
-                                    <div class="row">
-                                        <div class="col-sm-8">
-                                            
-                                            <h4 class="page-header">Id of Incident to be closed</h4>
-                                            <form role="form" action="/index/CloseIncident/{{adminid}}">
-                                                <div class="form-group float-label-control">
-                                                    <label for="id_incidentId">Number of Incident</label>
-                                                    <input id="id_incidentId" maxlength="9" name="username"type="number" class="form-control" placeholder="Number of Incident">
-                                                        </div>
-                                                    <div class="col-md-12 text-right">
-                                                    <button type="submit" class="btn btn-primary btn-lg" value="Submit">Submit</button>
-                                                    <br>
-                                                </div>
-                                            </form>
-                                            
-                                            
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                    
-                                </div>
-                            </div>
+							<div class="container">
+								<div class="row">
+									<div class="col-md-6 col-md-offset-3">
+										<div class="well well-sm">
+											<form class="form-horizontal" action="/index/CloseIncident/{{adminid}}" method="post" >
+												<fieldset>
+													<legend class="text-center">Number of Incident</legend>
+													{% csrf_token %}
+													<!-- Name input-->
+													<div class="form-group">
+														<label class="col-md-3 control-label" for="id_incidentId">Type</label>
+														<div class="col-md-9">
+															<input id="id_incidentId" maxlength="15" name="closedIncident" type="number" placeholder="Insert title of incident" class="form-control">
+														</div>
+													</div>
+																										
+													<!-- Form actions -->
+													<div class="form-group">
+														<div class="col-md-12 text-right">
+															<button type="submit" class="btn btn-primary btn-lg" value="Submit">Submit</button>
+														</div>
+													</div>
+												</fieldset>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
                             <br>
                             <div style="padding-left:80px">
                             {% render_table open_incidents %}

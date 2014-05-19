@@ -164,7 +164,7 @@ class CloseIncident(FormView):
     form_class = CloseIncidentForm
 
     def post(self, request, adminid):
-        iID = request.POST.get('incidentId', '')
+        iID = request.POST.get('closedIncident', '')
 
         cursor = connection.cursor()
         cursor.execute("UPDATE Incident SET Status='closed' WHERE IncidentId=%s", [iID])
@@ -176,7 +176,7 @@ class CloseIncident(FormView):
         return HttpResponseRedirect(url)
 
     def form_valid(self, form):
-        iID = form.cleaned_data['incidentId']
+        iID = form.cleaned_data['closedIncident']
 
         cursor = connection.cursor()
         cursor.execute("UPDATE Incident SET Status='closed' WHERE IncidentId=%s", [iID])
