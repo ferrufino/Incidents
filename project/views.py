@@ -144,12 +144,12 @@ class AssignEmployee(FormView):
         #count = count_cursor +1
 
 
-        cursor2 = connection.cursor()
-        cursor2.execute("INSERT INTO IncidentHistory VALUES(%s, %s, DEFAULT, DEFAULT, NULL, DEFAULT, NULL)", [iID, uID])
+        #cursor2 = connection.cursor()
+        #cursor2.execute("INSERT INTO IncidentHistory VALUES(%s, %s, DEFAULT, DEFAULT, NULL, DEFAULT, NULL)", [iID, uID])
 
         
         cursor3 = connection.cursor()
-        cursor3.execute("UPDATE Incident SET Status='assigned' WHERE IncidentId=%s", [iID])
+        cursor3.execute("UPDATE Incident SET Status='assigned', EmpID=%s WHERE IncidentId=%s", [iID, uID])
 
         url = '/index/manager/' + adminid
         return HttpResponseRedirect(url)
@@ -200,15 +200,14 @@ class UpdateIncident(FormView):
         #count_cursor.execute("SELECT COUNT(timesWorked)+1 FROM IncidentHistory where EmpID=%s", [empid])
         #count = int(count_cursor.fetchone()[0])
         #test_cursor = connection.cursor()
-        #test_cursor.execute("SELECT COUNT(timesWorked) FROM IncidentHistory WHERE IncidentId=%s AND EmpID=%s", [iID, empid])
-        #test = int(test_cursor.fetchone()[-1])
+        #test_cursor.execute("SELECT COUNT(timesWorked)+1 FROM IncidentHistory WHERE IncidentId=%s AND EmpID=%s", [iID, empid])
+        #test = int(test_cursor.fetchone()[0])
         #test = IncidentHistory.objects.raw("SELECT timesWorked FROM IncidentHistory WHERE IncidentId=%s AND EmpID=%s", [iID, empid])[0]
-        #cursor = connection.cursor()
 
         cursor = connection.cursor()
-        cursor.execute("UPDATE IncidentHistory SET TimeStart=%s, TimeEnd=%s, DateWorked=CURDATE(), description=%s WHERE IncidentId=%s", [start, end, desc, iID])
+        #cursor.execute("UPDATE IncidentHistory SET timesWorked=%s, TimeStart=%s, TimeEnd=%s, DateWorked=CURDATE(), description=%s WHERE IncidentId=%s", [test, start, end, desc, iID])
         
-        cursor.execute("INSERT INTO IncidentHistory VALUES(%s, %s, DEFAULT, DEFAULT, NULL, DEFAULT, NULL)", [iID, empid])
+        cursor.execute("INSERT INTO IncidentHistory VALUES(%s, %s, DEFAULT, %s, %s, CURDATE(), %s)", [iID, empid, start, end, desc])
 
         if conc:
             cursor2 = connection.cursor()
