@@ -26,9 +26,9 @@ def index(request):
         url = 'manager/' + suffix
         return HttpResponseRedirect(url)
     elif len(list(papa2)):
-		#template = loader.get_template('project/employee.html')
-		#context = RequestContext(request)
-		#return HttpResponse(template.render(context))
+        #template = loader.get_template('project/employee.html')
+        #context = RequestContext(request)
+        #return HttpResponse(template.render(context))
         suffix = str(papa2[0].empid)
         url = 'employee/' + suffix
         return HttpResponseRedirect(url)
@@ -48,32 +48,35 @@ class ManagerView(View):
     template_name = 'project/manager.html'
 
     def get(self,request, adminid):
-		return render(request, "project/manager.html", {
-														"table2": Incident.objects.all(),
-														"closed_incidents": Incident.objects.raw("SELECT * FROM Incident WHERE status='closed'"),
-														"open_incidents": Incident.objects.raw("SELECT * FROM Incident WHERE status<>'closed'"),
-														"ej1": Incidentsummary.objects.raw("SELECT * FROM IncidentSummary"),
-														"ej2": Incidentsummary2.objects.raw("SELECT * FROM IncidentSummary2"),
-														"ej3": Employeesolveincident.objects.raw("SELECT * FROM Employeesolveincident"),															
-														"ej4": Employeereportsmonth.objects.raw("SELECT * FROM Employeereportsmonth"),
-														"ej5": Oldestopenincident.objects.raw("SELECT * FROM Oldestopenincident"),
-														"ej6": Todaysincidents.objects.raw("SELECT * FROM Todaysincidents"),
-														"ej7": Incidentsbydept.objects.raw("SELECT * FROM Incidentsbydept"),
-														"ej8": Departmentminutes.objects.raw("SELECT * FROM Departmentminutes"),
-														"ej9": Mosturgent.objects.raw("SELECT * FROM Mosturgent"),
-														"ej10": Mostimpact.objects.raw("SELECT * FROM Mostimpact"),
+        return render(request, "project/manager.html", {
+                                                        "table2": Incident.objects.all(),
+                                                        "assign1": Incident.objects.raw("SELECT IncidentId, type, description FROM Incident WHERE status<>'closed' OR status<>'closed'"),
+                                                        "assign2": Employee.objects.raw("SELECT * FROM Employee E"),
+                                                        "closed_incidents": Incident.objects.raw("SELECT * FROM Incident WHERE status='closed'"),
+                                                        "open_incidents": Incident.objects.raw("SELECT * FROM Incident WHERE status<>'closed'"),
+                                                        "ej1": Incidentsummary.objects.raw("SELECT * FROM IncidentSummary"),
+                                                        "ej2": Incidentsummary2.objects.raw("SELECT * FROM IncidentSummary2"),
+                                                        "ej3": Employeesolveincident.objects.raw("SELECT * FROM Employeesolveincident"),                                                            
+                                                        "ej4": Employeereportsmonth.objects.raw("SELECT * FROM Employeereportsmonth"),
+                                                        "ej5": Oldestopenincident.objects.raw("SELECT * FROM Oldestopenincident"),
+                                                        "ej6": Todaysincidents.objects.raw("SELECT * FROM Todaysincidents"),
+                                                        "ej7": Incidentsbydept.objects.raw("SELECT * FROM Incidentsbydept"),
+                                                        "ej8": Departmentminutes.objects.raw("SELECT * FROM Departmentminutes"),
+                                                        "ej9": Mosturgent.objects.raw("SELECT * FROM Mosturgent"),
+                                                        "ej10": Mostimpact.objects.raw("SELECT * FROM Mostimpact"),
                                                         "ej11": Closedbydept.objects.raw("SELECT * FROM Closedbydept"),
                                                         "ej12": Clientmostsubmit.objects.raw("SELECT * FROM Clientmostsubmit"),
-														"adminid": adminid})
+                                                        "adminid": adminid})
         #return render(request, "project/manager.html", {"table": IncidentSummary.objects.raw("SELECT * FROM IncidentSummary"),
         #                                                "table2": Incident.objects.all()})
 
-	#return HttpResponse("You're in manager view.")
+    #return HttpResponse("You're in manager view.")
 
 class EmployeeView(View):
     template_name = 'project/employee.html'
     def get(self,request, empid):
-        return render(request, 'project/employee.html', {"assigned_incidents": IncidentHistory.objects.raw("SELECT* FROM IncidentHistory WHERE empid=%s", [empid]),
+        return render(request, 'project/employee.html', {"assigned_incidents": Incident.objects.raw("SELECT IncidentId, description FROM Incident WHERE EmpID=%s", [empid]),
+                                                        "history_assignments": IncidentHistory.objects.raw("SELECT* FROM IncidentHistory WHERE empid=%s", [empid]),
                                                         "empid": empid})
         #return render(papa in request.GET)
 
@@ -106,27 +109,27 @@ class RegisterTicket(FormView):
                         ) ''', [typ, urg, imp, desc, uID])
             
 
-	
+    
 
     def post(self, request, adminid):
-		typ = request.POST.get('type','')
-		urg = request.POST.get('urgency','')
-		imp = request.POST.get('impact','')
-		desc = request.POST.get('description','')
-		usern = request.POST.get('username','')
+        typ = request.POST.get('type','')
+        urg = request.POST.get('urgency','')
+        imp = request.POST.get('impact','')
+        desc = request.POST.get('description','')
+        usern = request.POST.get('username','')
 
-		cursor = connection.cursor()
-		cursor.execute("SELECT ClientID FROM Client WHERE Username=%s", [usern])
-		uID = cursor.fetchone()
+        cursor = connection.cursor()
+        cursor.execute("SELECT ClientID FROM Client WHERE Username=%s", [usern])
+        uID = cursor.fetchone()
 
-		cursor2 = connection.cursor()
-		cursor2.execute('''INSERT INTO Incident VALUES( 
-						DEFAULT, %s, 'submitted', %s, %s, %s,
-						%s, null, null, CURDATE(), null
-						) ''', [typ, urg, imp, desc, uID])
-		#adminid = request.GET.get('adminid', 'kkjhkjg')
-		url = '/index/manager/' + adminid
-		return HttpResponseRedirect(url)
+        cursor2 = connection.cursor()
+        cursor2.execute('''INSERT INTO Incident VALUES( 
+                        DEFAULT, %s, 'submitted', %s, %s, %s,
+                        %s, null, null, CURDATE(), null
+                        ) ''', [typ, urg, imp, desc, uID])
+        #adminid = request.GET.get('adminid', 'kkjhkjg')
+        url = '/index/manager/' + adminid
+        return HttpResponseRedirect(url)
 
 
 class AssignEmployee(FormView):

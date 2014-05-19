@@ -403,6 +403,8 @@
                                             </div>
                                         </form>
                                         
+                                        {% render_table assign1 %}
+                                        {% render_table assign2 %}
                                         
                                     </div>
                                     
@@ -540,6 +542,11 @@
                                                     <div style="padding-left:200px; padding-top:50px">
                                                    {% render_table ej5 %}
                                                    </div>
+
+                                                   <legend class="text-center"  style="padding-top:50px">Closed Incidents per assigned department</legend>
+                                                        <div style="padding-left:200px; padding-top:50px">
+                                                          {% render_table ej11 %}
+                                                        </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -553,6 +560,11 @@
                                                     <div style="padding-left:200px; padding-top:50px">
                                                     {% render_table ej6 %}
                                                     </div>
+
+                                                        <legend class="text-center"  style="padding-top:50px">Incidents with the most impact</legend>
+                                                        <div style="padding-left:200px; padding-top:50px">
+                                                          {% render_table ej10 %}
+                                                        </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -566,6 +578,11 @@
                                                 <div style="padding-left:200px; padding-top:50px">
                                                     {% render_table ej7 %}
                                                     </div>
+
+                                                    <legend class="text-center"  style="padding-top:50px">Client with most submissisions</legend>
+                                                        <div style="padding-left:200px; padding-top:50px">
+                                                          {% render_table ej12 %}
+                                                        </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -578,6 +595,28 @@
                                                 <div style="padding-left:200px; padding-top:50px">
                                                     {% render_table ej8 %}
                                                     </div>
+
+                                                        <legend class="text-center"  style="padding-top:50px">Most urgent incidents</legend>
+                                                        <div style="padding-left:200px; padding-top:50px">
+                                                          {% render_table ej9 %}
+                                                        </div>
+
+                                                        <legend class="text-center"  style="padding-top:50px">Incidents with the most impact</legend>
+                                                        <div style="padding-left:200px; padding-top:50px">
+                                                          {% render_table ej10 %}
+                                                        </div>
+
+                                                        <legend class="text-center"  style="padding-top:50px">Closed Incidents per assigned department</legend>
+                                                        <div style="padding-left:200px; padding-top:50px">
+                                                          {% render_table ej11 %}
+                                                        </div>
+
+                                                        <legend class="text-center"  style="padding-top:50px">Client with most submissisions</legend>
+                                                        <div style="padding-left:200px; padding-top:50px">
+                                                          {% render_table ej12 %}
+                                                        </div>
+
+
                                                 </div>
                                             </div>
                                         </div>
@@ -588,7 +627,7 @@
                                                         <legend class="text-center"  style="padding-top:50px">Most urgent incidents</legend>
 
                                                 <div style="padding-left:200px; padding-top:50px">
-                                                    {% render_table ej8 %}
+                                                    {% render_table ej9 %}
                                                     </div>
                                                 </div>
                                             </div>
@@ -600,8 +639,10 @@
                                                         <legend class="text-center"  style="padding-top:50px">Incidents with the most impact</legend>
 
                                                 <div style="padding-left:200px; padding-top:50px">
-                                                    {% render_table ej8 %}
+                                                    {% render_table ej10 %}
                                                     </div>
+
+                                                        <legend class="text-center"  style="padding-top:50px">Incidents with the most impact</legend>
                                                 </div>
                                             </div>
                                         </div>
@@ -619,6 +660,7 @@
                                             <div class="col-md-12">
                                                 
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
