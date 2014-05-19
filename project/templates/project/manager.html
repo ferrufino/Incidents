@@ -474,7 +474,8 @@
                                         <li><a href="#sb6">opt6<span class="sub_icon glyphicon glyphicon-book"></span></a></li>
                                         <li><a href="#sb7">opt7<span class="sub_icon glyphicon glyphicon-book"></span></a></li>
                                         <li><a href="#sb8">opt8<span class="sub_icon glyphicon glyphicon-book"></span></a></li>
-
+										<li><a href="#sb8">opt9<span class="sub_icon glyphicon glyphicon-book"></span></a></li>
+ 									    <li><a href="#sb8">opt10<span class="sub_icon glyphicon glyphicon-book"></span></a></li>
                                     </ul>
                                     
                                     <div class="sb-content">
@@ -483,7 +484,7 @@
                                             <div class="container">
                                                 <div class="row">
                                                     <fieldset>
-                                                        <legend class="text-center"  style="padding-top:50px">Incidents reported in the current month</legend>
+                                                        <legend class="text-center"  style="padding-top:50px">Employees that have resolved more Incidents</legend>
 
                                                     <div style="padding-left:200px; padding-top:50px">
                                                     {% render_table ej1 %}
@@ -496,7 +497,7 @@
                                             <div class="container">
                                                 <div class="row">
                                                     <fieldset>
-                                                        <legend class="text-center"  style="padding-top:50px">Incidents reported in the current month</legend>
+                                                        <legend class="text-center"  style="padding-top:50px">Incidents with more time unresolved</legend>
 
                                                     <div style="padding-left:200px; padding-top:50px">
                                                     {% render_table ej2 %}
@@ -521,7 +522,7 @@
                                             <div class="container">
                                                 <div class="row">
                                                     <fieldset>
-                                                        <legend class="text-center"  style="padding-top:50px">Incidents reported in the current month</legend>
+                                                        <legend class="text-center"  style="padding-top:50px">Incidents ordered by type</legend>
 
                                                     <div style="padding-left:200px; padding-top:50px">
                                                     {% render_table ej4 %}
@@ -534,7 +535,7 @@
                                             <div class="container">
                                                 <div class="row">
                                                     <fieldset>
-                                                        <legend class="text-center"  style="padding-top:50px">Incidents reported in the current month</legend>
+                                                        <legend class="text-center"  style="padding-top:50px">Incidents filtred by department</legend>
 
                                                     <div style="padding-left:200px; padding-top:50px">
                                                    {% render_table ej5 %}
@@ -547,7 +548,7 @@
                                             <div class="container">
                                                 <div class="row">
                                                     <fieldset>
-                                                        <legend class="text-center"  style="padding-top:50px">Incidents reported in the current month</legend>
+                                                        <legend class="text-center"  style="padding-top:50px">Department that resolved more Incidents in the last month</legend>
 
                                                     <div style="padding-left:200px; padding-top:50px">
                                                     {% render_table ej6 %}
@@ -560,7 +561,7 @@
                                             <div class="container">
                                                 <div class="row">
                                                     <fieldset>
-                                                        <legend class="text-center"  style="padding-top:50px">Incidents reported in the current month</legend>
+                                                        <legend class="text-center"  style="padding-top:50px">Incidents with greatest urgency to be solved.</legend>
 
                                                 <div style="padding-left:200px; padding-top:50px">
                                                     {% render_table ej7 %}
@@ -572,7 +573,31 @@
                                             <div class="container">
                                                 <div class="row">
                                                     <fieldset>
-                                                        <legend class="text-center"  style="padding-top:50px">Incidents reported in the current month</legend>
+                                                        <legend class="text-center"  style="padding-top:50px">Incidents with greatest impact unresolved.</legend>
+
+                                                <div style="padding-left:200px; padding-top:50px">
+                                                    {% render_table ej8 %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                              <div id="sb9" class="tab">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <fieldset>
+                                                        <legend class="text-center"  style="padding-top:50px">Administrators that report more incidents</legend>
+
+                                                <div style="padding-left:200px; padding-top:50px">
+                                                    {% render_table ej8 %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                                 <div id="sb9" class="tab">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <fieldset>
+                                                        <legend class="text-center"  style="padding-top:50px">Employee from each Department that has resolved the most Incidents.</legend>
 
                                                 <div style="padding-left:200px; padding-top:50px">
                                                     {% render_table ej8 %}
