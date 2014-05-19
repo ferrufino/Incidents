@@ -51,6 +51,17 @@ class ManagerView(View):
 														"table2": Incident.objects.all(),
 														"closed_incidents": Incident.objects.raw("SELECT * FROM Incident WHERE status='closed'"),
 														"open_incidents": Incident.objects.raw("SELECT * FROM Incident WHERE status<>'closed'"),
+														"ej1" : Incident.objects.raw("SELECT * FROM Incident WHERE status='closed'"),
+														"ej5" : Incident.objects.raw("SELECT * FROM Incident WHERE status='closed'"),
+														"ej6" : Incident.objects.raw("SELECT * FROM Incident WHERE status='closed'"),															
+														#"ej1": Incident.objects.raw("SELECT * from ej1"),
+														"ej2": Incident.objects.raw("SELECT * FROM incident WHERE DateClosed IS NULL AND DateSubmitted <= ALL( SELECT DateSubmitted FROM incident)"),
+														"ej3": Incident.objects.raw("SELECT * FROM incident WHERE MONTH(DateSubmitted) = MONTH(NOW())"),
+														"ej4": Incident.objects.raw("SELECT * FROM incident ORDER BY TYPE"),
+														#"ej5": Incident.objects.raw("select * from ej5"),
+														#"ej6": Incident.objects.raw("select * from ej6"),
+														"ej7": Incident.objects.raw("SELECT * FROM incident WHERE DateClosed IS NULL AND  urgency >= ALL( SELECT urgency FROM incident)"),
+														"ej8": Incident.objects.raw("SELECT* FROM incident WHERE DateClosed IS NULL AND impact >= ALL( SELECT impact FROM incident )"),
 														"adminid": adminid})
         #return render(request, "project/manager.html", {"table": IncidentSummary.objects.raw("SELECT * FROM IncidentSummary"),
         #                                                "table2": Incident.objects.all()})
