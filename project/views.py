@@ -1,11 +1,12 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 from django.shortcuts import render, render_to_response
-from project.models import Incident, Account, IncidentSummary, Client, Employee, Administrator, IncidentHistory
+from project.models import Incident, Account, Client, Employee, Administrator, IncidentHistory
 from django.db import connection
 from project.forms import TicketForm, AssignForm, CloseIncidentForm, IncidentHistoryForm
 from django.views.generic.edit import FormView, View
 from django.core.urlresolvers import reverse
+from project.models import Employeereportsmonth, Employeesolveincident, Incidentsbydept, Incidentsummary, Incidentsummary2, Mostimpact, Mosturgent, Oldestopenincident, Todaysincidents, Departmentminutes, Clientmostsubmit, Closedbydept
 
 
 # Create your views here.
@@ -47,21 +48,22 @@ class ManagerView(View):
     template_name = 'project/manager.html'
 
     def get(self,request, adminid):
-		return render(request, "project/manager.html", {"table": IncidentSummary.objects.raw("SELECT * FROM IncidentSummary"),
+		return render(request, "project/manager.html", {
 														"table2": Incident.objects.all(),
 														"closed_incidents": Incident.objects.raw("SELECT * FROM Incident WHERE status='closed'"),
 														"open_incidents": Incident.objects.raw("SELECT * FROM Incident WHERE status<>'closed'"),
-														"ej1" : Incident.objects.raw("SELECT * FROM Incident WHERE status='closed'"),
-														"ej5" : Incident.objects.raw("SELECT * FROM Incident WHERE status='closed'"),
-														"ej6" : Incident.objects.raw("SELECT * FROM Incident WHERE status='closed'"),															
-														#"ej1": Incident.objects.raw("SELECT * from ej1"),
-														"ej2": Incident.objects.raw("SELECT * FROM incident WHERE DateClosed IS NULL AND DateSubmitted <= ALL( SELECT DateSubmitted FROM incident)"),
-														"ej3": Incident.objects.raw("SELECT * FROM incident WHERE MONTH(DateSubmitted) = MONTH(NOW())"),
-														"ej4": Incident.objects.raw("SELECT * FROM incident ORDER BY TYPE"),
-														#"ej5": Incident.objects.raw("select * from ej5"),
-														#"ej6": Incident.objects.raw("select * from ej6"),
-														"ej7": Incident.objects.raw("SELECT * FROM incident WHERE DateClosed IS NULL AND  urgency >= ALL( SELECT urgency FROM incident)"),
-														"ej8": Incident.objects.raw("SELECT* FROM incident WHERE DateClosed IS NULL AND impact >= ALL( SELECT impact FROM incident )"),
+														"ej1": Incidentsummary.objects.raw("SELECT * FROM IncidentSummary"),
+														"ej2": Incidentsummary2.objects.raw("SELECT * FROM IncidentSummary2"),
+														"ej3": Employeesolveincident.objects.raw("SELECT * FROM Employeesolveincident"),															
+														"ej4": Employeereportsmonth.objects.raw("SELECT * FROM Employeereportsmonth"),
+														"ej5": Oldestopenincident.objects.raw("SELECT * FROM Oldestopenincident"),
+														"ej6": Todaysincidents.objects.raw("SELECT * FROM Todaysincidents"),
+														"ej7": Incidentsbydept.objects.raw("SELECT * FROM Incidentsbydept"),
+														"ej8": Departmentminutes.objects.raw("SELECT * FROM Departmentminutes"),
+														"ej9": Mosturgent.objects.raw("SELECT * FROM Mosturgent"),
+														"ej10": Mostimpact.objects.raw("SELECT * FROM Mostimpact"),
+                                                        "ej11": Closedbydept.objects.raw("SELECT * FROM Closedbydept"),
+                                                        "ej12": Clientmostsubmit.objects.raw("SELECT * FROM Clientmostsubmit"),
 														"adminid": adminid})
         #return render(request, "project/manager.html", {"table": IncidentSummary.objects.raw("SELECT * FROM IncidentSummary"),
         #                                                "table2": Incident.objects.all()})
@@ -120,7 +122,7 @@ class RegisterTicket(FormView):
 		cursor2 = connection.cursor()
 		cursor2.execute('''INSERT INTO Incident VALUES( 
 						DEFAULT, %s, 'submitted', %s, %s, %s,
-						%s, null, CURDATE(), null
+						%s, null, null, CURDATE(), null
 						) ''', [typ, urg, imp, desc, uID])
 		#adminid = request.GET.get('adminid', 'kkjhkjg')
 		url = '/index/manager/' + adminid

@@ -102,16 +102,138 @@ class IncidentHistory(models.Model):
         managed = False
         db_table = 'IncidentHistory'
 
-class IncidentSummary(models.Model):
-    incidentid = models.CharField(db_column='IncidentId', primary_key=True, max_length=10) # Field name made lowercase.
+##################################################    MYSQL VIEWS     #################################################################################
+class Employeereportsmonth(models.Model):
+    empid = models.CharField(db_column='EmpId', max_length=9, primary_key=True) # Field name made lowercase.
+    fname = models.CharField(db_column='FName', max_length=15, blank=True) # Field name made lowercase.
+    lname = models.CharField(db_column='LName', max_length=15, blank=True) # Field name made lowercase.
+    class Meta:
+        managed = False
+        db_table = 'employeereportsmonth'
+
+class Employeesolveincident(models.Model):
+    empid = models.CharField(db_column='EmpId', max_length=9, primary_key=True) # Field name made lowercase.
+    fname = models.CharField(db_column='FName', max_length=15, blank=True) # Field name made lowercase.
+    lname = models.CharField(db_column='LName', max_length=15, blank=True) # Field name made lowercase.
+    class Meta:
+        managed = False
+        db_table = 'employeesolveincident'
+
+class Incidentsbydept(models.Model):
+    deptid = models.CharField(db_column='DeptID', max_length=1, primary_key=True) # Field name made lowercase.
+    deptname = models.CharField(db_column='DeptName', max_length=15, blank=True) # Field name made lowercase.
+    incidentid = models.IntegerField(db_column='IncidentId') # Field name made lowercase.
+    description = models.CharField(max_length=144, blank=True)
+    status = models.CharField(max_length=15, blank=True)
+    class Meta:
+        managed = False
+        db_table = 'incidentsbydept'
+
+class Incidentsummary(models.Model):
+    incidentid = models.IntegerField(db_column='IncidentId', primary_key=True) # Field name made lowercase.
     description = models.CharField(max_length=144, blank=True)
     peopleworking = models.BigIntegerField(db_column='peopleWorking') # Field name made lowercase.
     minutesworked = models.DecimalField(db_column='minutesWorked', max_digits=35, decimal_places=4, blank=True, null=True) # Field name made lowercase.
     hoursworked = models.DecimalField(db_column='hoursWorked', max_digits=35, decimal_places=4, blank=True, null=True) # Field name made lowercase.
     def __unicode__(self):
-       return unicode(self.IncidentId)
+       return unicode(self.incidentid)
     class Meta:
         managed = False
         db_table = 'incidentsummary'
 
+class Incidentsummary2(models.Model):
+    incidentid = models.IntegerField(db_column='IncidentId', primary_key=True) # Field name made lowercase.
+    description = models.CharField(max_length=144, blank=True)
+    minutesworked = models.DecimalField(db_column='minutesWorked', max_digits=35, decimal_places=4, blank=True, null=True) # Field name made lowercase.
+    dayselapsed = models.IntegerField(db_column='daysElapsed', blank=True, null=True) # Field name made lowercase.
+    class Meta:
+        managed = False
+        db_table = 'incidentsummary2'
 
+class Mostimpact(models.Model):
+    incidentid = models.IntegerField(db_column='IncidentId', primary_key=True) # Field name made lowercase.
+    type = models.CharField(max_length=15, blank=True)
+    status = models.CharField(max_length=15, blank=True)
+    urgency = models.IntegerField(blank=True, null=True)
+    impact = models.IntegerField(blank=True, null=True)
+    description = models.CharField(max_length=144, blank=True)
+    clientid = models.CharField(db_column='ClientId', max_length=9, blank=True) # Field name made lowercase.
+    adminid = models.CharField(db_column='AdminID', max_length=9, blank=True) # Field name made lowercase.
+    empid = models.CharField(db_column='EmpID', max_length=9, blank=True) # Field name made lowercase.
+    datesubmitted = models.DateField(db_column='DateSubmitted', blank=True, null=True) # Field name made lowercase.
+    dateclosed = models.DateField(db_column='DateClosed', blank=True, null=True) # Field name made lowercase.
+    class Meta:
+        managed = False
+        db_table = 'mostimpact'
+
+class Mosturgent(models.Model):
+    incidentid = models.IntegerField(db_column='IncidentId', primary_key=True) # Field name made lowercase.
+    type = models.CharField(max_length=15, blank=True)
+    status = models.CharField(max_length=15, blank=True)
+    urgency = models.IntegerField(blank=True, null=True)
+    impact = models.IntegerField(blank=True, null=True)
+    description = models.CharField(max_length=144, blank=True)
+    clientid = models.CharField(db_column='ClientId', max_length=9, blank=True) # Field name made lowercase.
+    adminid = models.CharField(db_column='AdminID', max_length=9, blank=True) # Field name made lowercase.
+    empid = models.CharField(db_column='EmpID', max_length=9, blank=True) # Field name made lowercase.
+    datesubmitted = models.DateField(db_column='DateSubmitted', blank=True, null=True) # Field name made lowercase.
+    dateclosed = models.DateField(db_column='DateClosed', blank=True, null=True) # Field name made lowercase.
+    class Meta:
+        managed = False
+        db_table = 'mosturgent'
+
+class Oldestopenincident(models.Model):
+    incidentid = models.IntegerField(db_column='IncidentId', primary_key=True) # Field name made lowercase.
+    type = models.CharField(max_length=15, blank=True)
+    status = models.CharField(max_length=15, blank=True)
+    urgency = models.IntegerField(blank=True, null=True)
+    impact = models.IntegerField(blank=True, null=True)
+    description = models.CharField(max_length=144, blank=True)
+    clientid = models.CharField(db_column='ClientId', max_length=9, blank=True) # Field name made lowercase.
+    adminid = models.CharField(db_column='AdminID', max_length=9, blank=True) # Field name made lowercase.
+    empid = models.CharField(db_column='EmpID', max_length=9, blank=True) # Field name made lowercase.
+    datesubmitted = models.DateField(db_column='DateSubmitted', blank=True, null=True) # Field name made lowercase.
+    dateclosed = models.DateField(db_column='DateClosed', blank=True, null=True) # Field name made lowercase.
+    class Meta:
+        managed = False
+        db_table = 'oldestopenincident'
+
+class Todaysincidents(models.Model):
+    incidentid = models.IntegerField(db_column='IncidentId', primary_key=True) # Field name made lowercase.
+    type = models.CharField(max_length=15, blank=True)
+    status = models.CharField(max_length=15, blank=True)
+    urgency = models.IntegerField(blank=True, null=True)
+    impact = models.IntegerField(blank=True, null=True)
+    description = models.CharField(max_length=144, blank=True)
+    clientid = models.CharField(db_column='ClientId', max_length=9, blank=True) # Field name made lowercase.
+    adminid = models.CharField(db_column='AdminID', max_length=9, blank=True) # Field name made lowercase.
+    empid = models.CharField(db_column='EmpID', max_length=9, blank=True) # Field name made lowercase.
+    datesubmitted = models.DateField(db_column='DateSubmitted', blank=True, null=True) # Field name made lowercase.
+    dateclosed = models.DateField(db_column='DateClosed', blank=True, null=True) # Field name made lowercase.
+    class Meta:
+        managed = False
+        db_table = 'todaysincidents'
+
+class Departmentminutes(models.Model):
+    deptname = models.CharField(db_column='DeptName', max_length=15, blank=True, primary_key=True) # Field name made lowercase.
+    minutesworked = models.DecimalField(db_column='minutesWorked', max_digits=35, decimal_places=4, blank=True, null=True) # Field name made lowercase.
+    class Meta:
+        managed = False
+        db_table = 'departmentminutes'
+
+class Clientmostsubmit(models.Model):
+    clientid = models.CharField(db_column='ClientId', max_length=9, primary_key=True) # Field name made lowercase.
+    username = models.CharField(db_column='Username', max_length=15, blank=True) # Field name made lowercase.
+    fname = models.CharField(db_column='Fname', max_length=15, blank=True) # Field name made lowercase.
+    lname = models.CharField(db_column='LName', max_length=15, blank=True) # Field name made lowercase.
+    class Meta:
+        managed = False
+        db_table = 'clientmostsubmit'
+
+class Closedbydept(models.Model):
+    deptid = models.CharField(db_column='DeptId', max_length=1, primary_key=True) # Field name made lowercase.
+    deptname = models.CharField(db_column='DeptName', max_length=15, blank=True) # Field name made lowercase.
+    incidentssolved = models.BigIntegerField(db_column='IncidentsSolved') # Field name made lowercase.
+    class Meta:
+        managed = False
+        db_table = 'closedbydept'
