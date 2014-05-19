@@ -60,7 +60,8 @@ class ManagerView(View):
 class EmployeeView(View):
     template_name = 'project/employee.html'
     def get(self,request, empid):
-        return render(request, 'project/employee.html', {"assigned_incidents": IncidentHistory.objects.raw("SELECT* FROM IncidentHistory WHERE empid=%s", [empid]),})
+        return render(request, 'project/employee.html', {"assigned_incidents": IncidentHistory.objects.raw("SELECT* FROM IncidentHistory WHERE empid=%s", [empid]),
+                                                        "empid": empid})
         #return render(papa in request.GET)
 
 
@@ -127,10 +128,13 @@ class AssignEmployee(FormView):
         cursor.execute("SELECT EmpID FROM Employee WHERE Username=%s", [usern])
         uID = cursor.fetchone()
 
+        #count_cursor = connection.cursor()
+        #count_cursor.execute("SELECT COUNT(timesWorked) FROM IncidentHistory where EmpID=%s", [uID])
+        #count = count_cursor +1
+
+
         cursor2 = connection.cursor()
-        cursor2.execute('''INSERT INTO IncidentHistory VALUES( 
-                        %s, %s, NULL, NULL, NULL, NULL
-                        ) ''', [iID, uID])
+        cursor2.execute("INSERT INTO IncidentHistory VALUES(%s, %s, 1, DEFAULT, NULL, DEFAULT, NULL)", [iID, uID])
 
         
         cursor3 = connection.cursor()
@@ -139,24 +143,6 @@ class AssignEmployee(FormView):
         url = '/index/manager/' + adminid
         return HttpResponseRedirect(url)
 
-    def form_valid(self, form):
-        iID = form.cleaned_data['incidentId']
-        usern = form.cleaned_data['username']
-
-        cursor = connection.cursor()
-        cursor.execute("SELECT EmpID FROM Employee WHERE Username=%s", [usern])
-        uID = cursor.fetchone()
-
-        cursor2 = connection.cursor()
-        cursor2.execute('''INSERT INTO IncidentHistory VALUES( 
-                        %s, %s, NULL, NULL, NULL, NULL
-                        ) ''', [iID, uID])
-
-        
-        cursor3 = connection.cursor()
-        cursor3.execute("UPDATE Incident SET Status='assigned' WHERE IncidentId=%s", [iID])
-            
-        return super(AssignEmployee, self).form_valid(form);
 
 class CloseIncident(FormView):
     #return HttpResponse("This is the ticket creation form")
@@ -191,21 +177,28 @@ class UpdateIncident(FormView):
     template_name = 'project/UpdateIncident.html'
     form_class = IncidentHistoryForm
 
-    def post(self, request, empid):
+    def post(self, request, adminid):
+        empid = adminid
         iID = request.POST.get('incidentId', '')
-        start = request.POST.get('startHour', '')
-        end = request.POST.get('endHour', '')
+        start = request.POST.get('hourStart', '')
+        end = request.POST.get('hourEnd', '')
         conc = request.POST.get('concluded', '')
         desc = request.POST.get('description', '')
 
+        count_cursor = connection.cursor()
+        count_cursor.execute("SELECT COUNT(timesWorked)+1 FROM IncidentHistory where EmpID=%s", [empid])
+        count = int(count_cursor.fetchone()[0])
+
         cursor = connection.cursor()
-        cursor.execute("UPDATE IncidentHistroy SET TimeStart=%s, TimeEnd=%s, DateWorked=CURDATE(), description=%s WHERE IncidentId=%s", [start, end, desc, iID])
+        cursor.execute("UPDATE IncidentHistory SET TimeStart=%s, TimeEnd=%s, DateWorked=CURDATE(), description=%s WHERE IncidentId=%s", [start, end, desc, iID])
+
+        cursor.execute("UPDATE IncidentHistory SET timesWorked=%s", [count])
 
         if conc:
             cursor2 = connection.cursor()
             cursor2.execute("UPDATE Incident SET status='solved' WHERE IncidentId=%s", [iID])
 
-        url = '/index/manager/' + str(empid)
+        url = '/index/employee/' + empid
         return HttpResponseRedirect(url)
 
 
