@@ -3,7 +3,7 @@ from django.template import RequestContext, loader
 from django.shortcuts import render, render_to_response
 from project.models import Incident, Account, IncidentSummary, Client, Employee, Administrator, IncidentHistory
 from django.db import connection
-from project.forms import TicketForm, AssignForm, CloseIncidentForm
+from project.forms import TicketForm, AssignForm, CloseIncidentForm, IncidentHistoryForm
 from django.views.generic.edit import FormView, View
 from django.core.urlresolvers import reverse
 
@@ -185,3 +185,23 @@ class CloseIncident(FormView):
         cursor2.execute("UPDATE Incident SET DateClosed=CURDATE() WHERE IncidentId=%s", [iID])
 
         return super(RegisterTicket, self).form_valid(form);
+
+class UpdateIncident(FormView):
+    #return HttpResponse("This is the ticket creation form")
+    template_name = 'project/UpdateIncident.html'
+    form_class = IncidentHistoryForm
+
+    def post(self, request, empid):
+        start = request.POST.get('startHour', '')
+        end = request.POST.get('endHour', '')
+        conc = request.POST.get('concluded', '')
+        desc = request.POST.get('description', '')
+
+        cursor = connection.cursor()
+        cursor.execute("UPDATE IncidentHistroy SET TimeStart=%s, TimeEnd=%s, DateWorked=CURDATE(), description=%s WHERE IncidentId=%s", [start, end, desc])
+
+        #cursor2 = connection.cursor()
+        #cursor2.execute("UPDATE Incident SET DateClosed=CURDATE() WHERE IncidentId=%s", [iID])
+
+        url = '/index/manager/' + str(empid)
+        return HttpResponseRedirect(url)
