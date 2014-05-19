@@ -25,6 +25,19 @@
                                                                       e.preventDefault();
                                                                       });
                                            }); </script>
+                <script> $(document).ready(function() {
+                                           $('.sbs .sidebar-nav a').on('click', function(e)  {
+                                                                       var currentAttrValue = $(this).attr('href');
+                                                                       
+                                                                       // Show/Hide Tabs
+                                                                       $('.sbs ' + currentAttrValue).show().siblings().hide();
+                                                                       
+                                                                       // Change/remove current tab to active
+                                                                       $(this).parent('li').addClass('active').siblings().removeClass('active');
+                                                                       
+                                                                       e.preventDefault();
+                                                                       });
+                                           }); </script>
                 <script>
                     /* Float Label Pattern Plugin for Bootstrap 3.1.0 by Travis Wilson
                      **************************************************/
@@ -105,6 +118,162 @@
                    });
                  })(jQuery);
                     </script>
+                
+                <style>
+                    .row{
+                        margin-left:0px;
+                        margin-right:0px;
+                    }
+                
+                #wrapper {
+                    padding-left: 70px;
+                    transition: all .4s ease 0s;
+                    height: 100%
+                }
+                
+                #sidebar-wrapper {
+                    margin-left: -150px;
+                    left: 70px;
+                    width: 150px;
+                    background: #222;
+                    position: fixed;
+                    height: 100%;
+                    z-index: 10000;
+                    transition: all .4s ease 0s;
+                }
+                
+                .sidebar-nav {
+                    display: block;
+                    float: left;
+                    width: 150px;
+                    list-style: none;
+                    margin: 0;
+                    padding: 0;
+                }
+                #page-content-wrapper {
+                    padding-left: 0;
+                    margin-left: 0;
+                    width: 100%;
+                    height: auto;
+                }
+                #wrapper.active {
+                    padding-left: 150px;
+                }
+                #wrapper.active #sidebar-wrapper {
+                    left: 150px;
+                }
+                
+                #page-content-wrapper {
+                    width: 100%;
+                }
+                
+                #sidebar_menu li a, .sidebar-nav li a {
+                    color: #999;
+                    display: block;
+                    float: left;
+                    text-decoration: none;
+                    width: 150px;
+                    background: #252525;
+                    border-top: 1px solid #373737;
+                    border-bottom: 1px solid #1A1A1A;
+                    -webkit-transition: background .5s;
+                    -moz-transition: background .5s;
+                    -o-transition: background .5s;
+                    -ms-transition: background .5s;
+                    transition: background .5s;
+                }
+                .sidebar_name {
+                    padding-top: 25px;
+                    color: #fff;
+                    opacity: .7;
+                }
+                
+                .sidebar-nav li {
+                    line-height: 40px;
+                    text-indent: 20px;
+                }
+                
+                .sidebar-nav li a {
+                    color: #999999;
+                    display: block;
+                    text-decoration: none;
+                }
+                
+                .sidebar-nav li a:hover {
+                    color: #fff;
+                    background: rgba(255,255,255,0.2);
+                    text-decoration: none;
+                }
+                
+                .sidebar-nav li a:active,
+                .sidebar-nav li a:focus {
+                    text-decoration: none;
+                }
+                
+                .sidebar-nav > .sidebar-brand {
+                    height: 65px;
+                    line-height: 60px;
+                    font-size: 18px;
+                }
+                
+                .sidebar-nav > .sidebar-brand a {
+                    color: #999999;
+                }
+                
+                .sidebar-nav > .sidebar-brand a:hover {
+                    color: #fff;
+                    background: none;
+                }
+                
+                #main_icon
+                {
+                    float:right;
+                    padding-right: 65px;
+                    padding-top:20px;
+                }
+                .sub_icon
+                {
+                    float:right;
+                    padding-right: 65px;
+                    padding-top:10px;
+                }
+                .content-header {
+                    height: 65px;
+                    line-height: 65px;
+                }
+                
+                .content-header h1 {
+                    margin: 0;
+                    margin-left: 20px;
+                    line-height: 65px;
+                    display: inline-block;
+                }
+                
+                @media (max-width:767px) {
+                    #wrapper {
+                        padding-left: 70px;
+                        transition: all .4s ease 0s;
+                    }
+                    #sidebar-wrapper {
+                        left: 70px;
+                    }
+                    #wrapper.active {
+                        padding-left: 150px;
+                    }
+                    #wrapper.active #sidebar-wrapper {
+                        left: 150px;
+                        width: 150px;
+                        transition: all .4s ease 0s;
+                    }
+                }
+                
+                    </style>
+                <script>
+                    $("#menu-toggle").click(function(e) {
+                                            e.preventDefault();
+                                            $("#wrapper").toggleClass("active");
+                                            });
+                    </script>
                 </head>
         <body>
             
@@ -121,13 +290,22 @@
                 </div>
             </nav>
             
+            
+            
+            
+            
+            
+            
+            
+            
+            
             <div class="tabs">
                 <ul class="tab-links">
                     <li class="active"><a href="#tab1">Incidents</a></li>
                     <li><a href="#tab2">Assign</a></li>
                     <li><a href="#tab3">Active Incidents</a></li>
-                    <li><a href="#tab4">Historial</a></li>
-                    <li><a href="#tab5">Mas info</a></li>
+                    <li><a href="#tab4">History</a></li>
+                    <li><a href="#tab5">More Info</a></li>
                 </ul>
                 
                 <div class="tab-content">
@@ -208,7 +386,9 @@
                                         
                                         <h4 class="page-header">Assign Incident to Employee</h4>
                                         <form role="form" action="/index/AssignEmployee/{{adminid}}" method="post">
+                                             <div style="padding-left:180px">
                                             {% csrf_token %}
+                                            </div>
                                             <div class="form-group float-label-control">
                                                 <label for="id_incidentId">Number of Incident</label>
                                                 <input id="id_incidentId" maxlength="9" name="incidentId"type="number" class="form-control" placeholder="Number of Incident">
@@ -231,53 +411,160 @@
                                 
                             </div>
                         </div>
+                    </div>
+                    <div id="tab3" class="tab">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-3">
+                                    <div class="well well-sm">
+                                        <form class="form-horizontal" action="/index/CloseIncident/{{adminid}}" method="post" >
+                                            <fieldset>
+                                                <legend class="text-center">Number of Incident</legend>
+                                                        {% csrf_token %}
+                                                
+                                                <!-- Name input-->
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label" for="id_incidentId">Type</label>
+                                                    <div class="col-md-9">
+                                                        <input id="id_incidentId" maxlength="15" name="closedIncident" type="number" placeholder="Insert title of incident" class="form-control">
+                                                            </div>
+                                                </div>
+                                                
+                                                <!-- Form actions -->
+                                                <div class="form-group">
+                                                    <div class="col-md-12 text-right">
+                                                        <button type="submit" class="btn btn-primary btn-lg" value="Submit">Submit</button>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div id="tab3" class="tab">
-							<div class="container">
-								<div class="row">
-									<div class="col-md-6 col-md-offset-3">
-										<div class="well well-sm">
-											<form class="form-horizontal" action="/index/CloseIncident/{{adminid}}" method="post" >
-												<fieldset>
-													<legend class="text-center">Number of Incident</legend>
-													{% csrf_token %}
-													<!-- Name input-->
-													<div class="form-group">
-														<label class="col-md-3 control-label" for="id_incidentId">Type</label>
-														<div class="col-md-9">
-															<input id="id_incidentId" maxlength="15" name="closedIncident" type="number" placeholder="Insert title of incident" class="form-control">
-														</div>
-													</div>
-																										
-													<!-- Form actions -->
-													<div class="form-group">
-														<div class="col-md-12 text-right">
-															<button type="submit" class="btn btn-primary btn-lg" value="Submit">Submit</button>
-														</div>
-													</div>
-												</fieldset>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-                            <br>
-                            <div style="padding-left:80px">
+                        <br>
+                        <div style="padding-left:280px">
                             {% render_table open_incidents %}
-                            </div>
                         </div>
-                        
-                        <div id="tab4" class="tab">
-                             <div style="padding-left:200px">
+                    </div>
+                    
+                    <div id="tab4" class="tab">
+                        <div style="padding-left:200px">
                             {% render_table closed_incidents %}
-                            </div>
                         </div>
-                        <div id="tab5" class="tab">
+                    </div>
+                    <div id="tab5" class="tab">
+                        <div id="wrapper" class="active">
+                            
+                            <!-- Sidebar -->
+                            <!-- Sidebar -->
+                            <div id="sidebar-wrapper">
+                                <ul id="sidebar_menu" class="sidebar-nav">
+                                    <li class="sidebar-brand"><font color="white">Options</font></li>
+                                </ul>
+                                <div class="sbs">
+                                    <ul class="sidebar-nav" id="sidebar">     
+                                        
+                                        <li><a href="#sb1">link1<span class="sub_icon glyphicon glyphicon-book"></span></a></li>
+                                        <li><a href="#sb2">link2<span class="sub_icon glyphicon glyphicon-book"></span></a></li>
+                                        <li><a href="#sb3">link3<span class="sub_icon glyphicon glyphicon-book"></span></a></li>
+                                        <li><a href="#sb4">link4<span class="sub_icon glyphicon glyphicon-book"></span></a></li>
+                                        <li><a href="#sb5">link5<span class="sub_icon glyphicon glyphicon-book"></span></a></li>
+                                        <li><a href="#sb6">link6<span class="sub_icon glyphicon glyphicon-book"></span></a></li>
+                                        <li><a href="#sb7">link7<span class="sub_icon glyphicon glyphicon-book"></span></a></li>
+                                        <li><a href="#sb8">link8<span class="sub_icon glyphicon glyphicon-book"></span></a></li>
+
+                                    </ul>
+                                    
+                                    <div class="sb-content">
+                                        
+                                        <div id="sb1" class="tab active">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <h1>hola</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="sb2" class="tab">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <h1>holsadasfdsafasdfasa</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="sb3" class="tab">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <h1>EJEMPLO3</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="sb4" class="tab">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <h1>EJEMPLO4</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="sb5" class="tab">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <h1>EJEMPLO5</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="sb6" class="tab">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <h1>EJEMPLO6</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="sb7" class="tab">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <h1>EJEMPLO7</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="sb8" class="tab">
+                                            <div class="container">
+                                                <div class="row">
+                                                    <h1>EJEMPLO8</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                        
+                                    </div>
+                                </div>
+                                
+                                <!-- Page content -->
+                                <div id="page-content-wrapper">
+                                    <!-- Keep all page content within the page-content inset div! -->
+                                    <div class="page-content inset">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div> 
                         </div>
                     </div>
                     
                     
                 </div>
+                
                 
                 
                 
