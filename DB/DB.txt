@@ -52,10 +52,13 @@ create table Incident(
 	description varchar(144),
 	ClientId char(9),
 	AdminID char(9),
+	EmpID char(9),
 	DateSubmitted date,
+	DateClosed date,
 	primary key(IncidentId),
 	foreign key(ClientId) references Client(ClientId),
-	foreign key(AdminID) references Administrator(AdminID)
+	foreign key(AdminID) references Administrator(AdminID),
+	foreign key(EmpId) references Employee(EmpId)
 	);
 create table IncidentHistory(
 	IncidentId int(10) UNSIGNED NOT NULL,
@@ -101,14 +104,8 @@ insert into Client values (001814060,'Ahmad', 'Jabbar',
 '001814060@itesm.com', 0817778888, 'jabbar');
 insert into Client values (001824460,'Jose', 'Ramirez', 
 '001824460@itesm.com', 0819992222, 'jRamirez');
-create view IncidentSummary as
-select I.IncidentId, I.description, count(H.EmpID) as peopleWorking, 
-    sum(time_to_sec(subtime(H.TimeEnd, H.TimeStart))/60) as minutesWorked, 
-    sum(time_to_sec(subtime(H.TimeEnd, H.TimeStart))/3600) as hoursWorked
-from Incident I, IncidentHistory H
-where I.IncidentId = H.IncidentId
-group by I.IncidentId;
-INSERT INTO `dbproject`.`incident` (`IncidentId`, `type`, `status`, `urgency`, `impact`, `description`, `ClientId`, `DateSubmitted`) VALUES ('1', 'Probelma1', 'submitted', '1', '5', 'tables', '804060', '2014-06-14');
+
+INSERT INTO `dbproject`.`incident` (`IncidentId`, `type`, `status`, `urgency`, `impact`, `description`, `ClientId`, `DateSubmitted`) VALUES ('1', 'Probelma1', 'submitted', '1', '5', 'tables', '804060', null, '2014-06-14');
 INSERT INTO `dbproject`.`incident` (`IncidentId`, `type`, `status`, `urgency`, `impact`, `description`, `ClientId`, `DateSubmitted`) VALUES ('2', 'Problema2', 'submitted', '1', '3', 'tables', '804060', '2014-07-14');
 INSERT INTO `dbproject`.`incident` (`IncidentId`, `type`, `status`, `urgency`, `impact`, `description`, `ClientId`, `DateSubmitted`) VALUES ('4', 'Toilet 4', 'submitted', '1', '5', 'tables', '804060', '2014-06-14');
 INSERT INTO `dbproject`.`incident` (`IncidentId`, `type`, `status`, `urgency`, `impact`, `description`, `ClientId`, `DateSubmitted`) VALUES ('5', 'Food Tables 4', 'submitted', '1', '3', 'tables', '804060', '2014-07-14');
@@ -121,32 +118,3 @@ INSERT INTO `dbproject`.`incidenthistory` (`IncidentId`, `EmpId`, `timesWorked`,
 INSERT INTO `dbproject`.`incidenthistory` (`IncidentId`, `EmpId`, `timesWorked`, `TimeStart`, `DateWorked`, `description`) VALUES ('4', '888123456', '1', '14:30', '2014-03-15', 'leak fixed');
 INSERT INTO `dbproject`.`incidenthistory` (`IncidentId`, `EmpId`, `timesWorked`, `TimeStart`, `DateWorked`, `description`) VALUES ('5', '888123456', '1', '14:30', '2014-03-15', 'leak fixed');
 INSERT INTO `dbproject`.`incidenthistory` (`IncidentId`, `EmpId`, `timesWorked`, `TimeStart`, `DateWorked`, `description`) VALUES ('6', '888123456', '1', '14:30', '2014-03-15', 'fixed');
-
-create view ej1 as
-SELECT B.EmpId, A.FName, A.LName
-FROM employee A, incidenthistory B
-WHERE A.EmpId = B.EmpId
-GROUP BY B.EmpId
-HAVING COUNT(A.EmpId) >= ALL(
-        SELECT COUNT(EmpId)
-        FROM incidenthistory
-        GROUP BY EmpId
-        );
-
-create view ej5 as
-SELECT B.DeptID, A.*
-FROM incident A, employee B, incidenthistory C
-WHERE A.IncidentId = C.IncidentId AND B.EmpId = C.EmpId
-ORDER BY B.DeptID;
-
-create view ej6 as
-SELECT D.DeptID, D.DeptName
-FROM incident A, employee B, incidenthistory C, department D
-WHERE A.IncidentId = C.IncidentId AND B.EmpId = C.EmpId AND B.DeptID = D.DeptID AND MONTH(A.DateClosed) = MONTH(NOW())
-GROUP BY D.DeptId
-HAVING COUNT(D.DeptId) >= ALL(
-        SELECT COUNT(D1.DeptId)
-        FROM incident A1, employee B1, incidenthistory C1, department D1
-        WHERE A1.IncidentId = C1.IncidentId AND B1.EmpId = C1.EmpId AND B1.DeptID = D1.DeptID
-        GROUP BY D1.DeptId
-        );
