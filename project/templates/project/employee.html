@@ -51,6 +51,54 @@
     </ul>
  
     <div class="tab-content">
+	<div id="tab1" class="tab active">
+                        
+                        <!-- EJEMPLO DE CARD -->
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-3">
+                                    <div class="well well-sm">
+                                        <form class="form-horizontal" action="/index/registerTicket/{{adminid}}" method="post">
+                                            <fieldset>
+                                                <legend class="text-center">Incident Card</legend>
+                                                {% csrf_token %}
+                                                <!-- Name input-->
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label" for="id_type">Start</label>
+                                                    <div class="col-md-9">
+                                                        <input id="id_type" maxlength="15" name="start" type="time" placeholder="Insert start of incident" class="form-control">
+                                                            </div>
+                                                </div>
+                                                
+                                                <!-- Urgency input-->
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label" for="id_urgency">End</label>
+                                                    <div class="col-md-9">
+                                                        <input id="id_urgency" name="end" type="time" placeholder="Insert end of incident" class="form-control">
+                                                            </div>
+                                                </div>
+												
+												<!-- Description -->
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label" for="id_description">Description</label>
+                                                    <div class="col-md-9">
+                                                        <textarea class="form-control" id="id_description" name="description" placeholder="Please enter your message here..."  maxlength="100" ></textarea>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Form actions -->
+                                                <div class="form-group">
+                                                    <div class="col-md-12 text-right">
+                                                        <button type="submit" class="btn btn-primary btn-lg" value="Submit">Submit</button>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
         <div id="tab1" class="tab active">
 	  		<div class="container">
 
