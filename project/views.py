@@ -137,7 +137,7 @@ class AssignEmployee(FormView):
 
         cursor = connection.cursor()
         cursor.execute("SELECT EmpID FROM Employee WHERE Username=%s", [usern])
-        uID = cursor.fetchone()
+        uID = cursor.fetchone()[0]
 
         #count_cursor = connection.cursor()
         #count_cursor.execute("SELECT COUNT(timesWorked) FROM IncidentHistory where EmpID=%s", [uID])
@@ -149,7 +149,7 @@ class AssignEmployee(FormView):
 
         
         cursor3 = connection.cursor()
-        cursor3.execute("UPDATE Incident SET Status='assigned', EmpID=%s WHERE IncidentId=%s", [iID, uID])
+        cursor3.execute("UPDATE Incident SET status='assigned', EmpID=%s WHERE IncidentId=%s", [uID, iID])
 
         url = '/index/manager/' + adminid
         return HttpResponseRedirect(url)
