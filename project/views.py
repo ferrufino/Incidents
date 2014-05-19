@@ -134,7 +134,7 @@ class AssignEmployee(FormView):
 
 
         cursor2 = connection.cursor()
-        cursor2.execute("INSERT INTO IncidentHistory VALUES(%s, %s, 1, DEFAULT, NULL, DEFAULT, NULL)", [iID, uID])
+        cursor2.execute("INSERT INTO IncidentHistory VALUES(%s, %s, DEFAULT, DEFAULT, NULL, DEFAULT, NULL)", [iID, uID])
 
         
         cursor3 = connection.cursor()
@@ -178,21 +178,21 @@ class UpdateIncident(FormView):
     form_class = IncidentHistoryForm
 
     def post(self, request, adminid):
-        empid = adminid
         iID = request.POST.get('incidentId', '')
         start = request.POST.get('hourStart', '')
         end = request.POST.get('hourEnd', '')
         conc = request.POST.get('concluded', '')
         desc = request.POST.get('description', '')
+        empid = request.POST.get('empId', '')
 
-        count_cursor = connection.cursor()
-        count_cursor.execute("SELECT COUNT(timesWorked)+1 FROM IncidentHistory where EmpID=%s", [empid])
-        count = int(count_cursor.fetchone()[0])
+        #count_cursor = connection.cursor()
+        #count_cursor.execute("SELECT COUNT(timesWorked)+1 FROM IncidentHistory where EmpID=%s", [empid])
+        #count = int(count_cursor.fetchone()[0])
 
         cursor = connection.cursor()
         cursor.execute("UPDATE IncidentHistory SET TimeStart=%s, TimeEnd=%s, DateWorked=CURDATE(), description=%s WHERE IncidentId=%s", [start, end, desc, iID])
 
-        cursor.execute("UPDATE IncidentHistory SET timesWorked=%s", [count])
+        cursor.execute("INSERT INTO IncidentHistory VALUES(%s, %s, DEFAULT, DEFAULT, NULL, DEFAULT, NULL)", [iID, empid])
 
         if conc:
             cursor2 = connection.cursor()
