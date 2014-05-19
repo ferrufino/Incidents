@@ -188,10 +188,15 @@ class UpdateIncident(FormView):
         #count_cursor = connection.cursor()
         #count_cursor.execute("SELECT COUNT(timesWorked)+1 FROM IncidentHistory where EmpID=%s", [empid])
         #count = int(count_cursor.fetchone()[0])
+        #test_cursor = connection.cursor()
+        #test_cursor.execute("SELECT COUNT(timesWorked) FROM IncidentHistory WHERE IncidentId=%s AND EmpID=%s", [iID, empid])
+        #test = int(test_cursor.fetchone()[-1])
+        #test = IncidentHistory.objects.raw("SELECT timesWorked FROM IncidentHistory WHERE IncidentId=%s AND EmpID=%s", [iID, empid])[0]
+        #cursor = connection.cursor()
 
         cursor = connection.cursor()
         cursor.execute("UPDATE IncidentHistory SET TimeStart=%s, TimeEnd=%s, DateWorked=CURDATE(), description=%s WHERE IncidentId=%s", [start, end, desc, iID])
-
+        
         cursor.execute("INSERT INTO IncidentHistory VALUES(%s, %s, DEFAULT, DEFAULT, NULL, DEFAULT, NULL)", [iID, empid])
 
         if conc:

@@ -90,7 +90,8 @@ class Incident(models.Model):
 
 class IncidentHistory(models.Model):
     incidentid = models.ForeignKey(Incident, db_column='IncidentId', primary_key=True) # Field name made lowercase.
-    empid = models.ForeignKey(Employee, db_column='EmpId', primary_key=True) # Field name made lowercase.
+    empid = models.ForeignKey(Employee, db_column='EmpId', primary_key=True)
+    timesworked = models.IntegerField(db_column='timesWorked') # Field name made lowercase.
     timestart = models.TimeField(db_column='TimeStart', blank=True, null=True) # Field name made lowercase.
     timeend = models.TimeField(db_column='TimeEnd', blank=True, null=True) # Field name made lowercase.
     dateworked = models.DateField(db_column='DateWorked', blank=True, null=True) # Field name made lowercase.
