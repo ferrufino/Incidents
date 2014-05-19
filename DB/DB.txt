@@ -58,16 +58,20 @@ create table Incident(
 	foreign key(AdminID) references Administrator(AdminID)
 	);
 create table IncidentHistory(
-	IncidentId int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+	IncidentId int(10) UNSIGNED NOT NULL,
 	EmpId char(9),
+	timesWorked int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 	TimeStart time(3),
 	TimeEnd time(3),
 	DateWorked date,
 	description varchar(144),
-	primary key(IncidentId, EmpId),
+	primary key(IncidentId, EmpId, timesWorked),
 	foreign key(IncidentId) references Incident(IncidentId),
 	foreign key(EmpId) references Employee(EmpId)
-	);
+	)ENGINE=MyISAM;
+	
+
+alter table dbproject.Incident add DateClosed date;
 insert into Department values(1, 'IT');
 insert into Department values(2, 'Maintenance');
 insert into Account values ('jamesborg', 'Employee');
@@ -105,12 +109,41 @@ from Incident I, IncidentHistory H
 where I.IncidentId = H.IncidentId
 group by I.IncidentId;
 insert into Incident values (1, 'Computer Issue', 'submitted',
- 2, 3, 'computer wont boot up', 000804060, null, '2014-03-14');
+ 2, 3, 'computer wont boot up', 000804060, null, '2014-03-14', '2014-03-14');
+insert into Incident values (2, 'Leak', 'submitted',
+ 2, 3, "water leak in bathroom 2", 001814060, null, '2014-05-12', '2014-03-14');
 insert into IncidentHistory values (1, 888123456, '10:30', '11:30',
 '2014-03-14', 'still not working');
 insert into IncidentHistory values (1, 111222333, '14:30', '15:50',
 '2014-03-15', 'problem fixed');
-insert into Incident values (2, 'Leak', 'submitted',
- 2, 3, "water leak in bathroom 2", 001814060, null, '2014-05-12');
 insert into IncidentHistory values (2, 987654321, '9:30', '10:00',
 '2014-05-13', 'leak fixed');
+
+create view ej1 as
+SELECT B.EmpId, A.FName, A.LName
+FROM employee A, incidenthistory B
+WHERE A.EmpId = B.EmpId
+GROUP BY B.EmpId
+HAVING COUNT(A.EmpId) >= ALL(
+        SELECT COUNT(EmpId)
+        FROM incidenthistory
+        GROUP BY EmpId
+        );
+
+create view ej5 as
+SELECT B.DeptID, A.*
+FROM incident A, employee B, incidenthistory C
+WHERE A.IncidentId = C.IncidentId AND B.EmpId = C.EmpId
+ORDER BY B.DeptID;
+
+create view ej6 as
+SELECT D.DeptID, D.DeptName
+FROM incident A, employee B, incidenthistory C, department D
+WHERE A.IncidentId = C.IncidentId AND B.EmpId = C.EmpId AND B.DeptID = D.DeptID AND MONTH(A.DateClosed) = MONTH(NOW())
+GROUP BY D.DeptId
+HAVING COUNT(D.DeptId) >= ALL(
+        SELECT COUNT(D1.DeptId)
+        FROM incident A1, employee B1, incidenthistory C1, department D1
+        WHERE A1.IncidentId = C1.IncidentId AND B1.EmpId = C1.EmpId AND B1.DeptID = D1.DeptID
+        GROUP BY D1.DeptId
+        );
