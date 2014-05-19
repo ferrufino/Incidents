@@ -74,13 +74,6 @@ class RegisterTicket(FormView):
     template_name = 'project/registerTicket.html'
     form_class = TicketForm
 
-
-    def post(self, request, adminid):
-        #adminid = request.GET.get('adminid', 'kkjhkjg')
-        url = '/index/manager/' + adminid
-        return HttpResponseRedirect(url)
-
-
     def form_valid(self, form):
         typ = form.cleaned_data['type']
         urg = form.cleaned_data['urgency']
@@ -99,8 +92,27 @@ class RegisterTicket(FormView):
                         ) ''', [typ, urg, imp, desc, uID])
             
 
+	
 
-        return super(RegisterTicket, self).form_valid(form);
+    def post(self, request, adminid):
+		typ = request.POST.get('type','')
+		urg = request.POST.get('urgency','')
+		imp = request.POST.get('impact','')
+		desc = request.POST.get('description','')
+		usern = request.POST.get('username','')
+
+		cursor = connection.cursor()
+		cursor.execute("SELECT ClientID FROM Client WHERE Username=%s", [usern])
+		uID = cursor.fetchone()
+
+		cursor2 = connection.cursor()
+		cursor2.execute('''INSERT INTO Incident VALUES( 
+						DEFAULT, %s, 'submitted', %s, %s, %s,
+						%s, null, CURDATE(), null
+						) ''', [typ, urg, imp, desc, uID])
+		#adminid = request.GET.get('adminid', 'kkjhkjg')
+		url = '/index/manager/' + adminid
+		return HttpResponseRedirect(url)
 
 
 class AssignEmployee(FormView):
