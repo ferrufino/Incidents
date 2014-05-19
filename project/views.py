@@ -120,7 +120,22 @@ class AssignEmployee(FormView):
     form_class = AssignForm
 
     def post(self, request, adminid):
-        #adminid = request.GET.get('adminid', 'kkjhkjg')
+        iID = request.POST.get('incidentId', '')
+        usern = request.POST.get('username', '')
+
+        cursor = connection.cursor()
+        cursor.execute("SELECT EmpID FROM Employee WHERE Username=%s", [usern])
+        uID = cursor.fetchone()
+
+        cursor2 = connection.cursor()
+        cursor2.execute('''INSERT INTO IncidentHistory VALUES( 
+                        %s, %s, NULL, NULL, NULL, NULL
+                        ) ''', [iID, uID])
+
+        
+        cursor3 = connection.cursor()
+        cursor3.execute("UPDATE Incident SET Status='assigned' WHERE IncidentId=%s", [iID])
+
         url = '/index/manager/' + adminid
         return HttpResponseRedirect(url)
 
@@ -149,8 +164,15 @@ class CloseIncident(FormView):
     form_class = CloseIncidentForm
 
     def post(self, request, adminid):
-        #adminid = request.GET.get('adminid', 'kkjhkjg')
-        url = '/index/manager/' + adminid
+        iID = request.POST.get('incidentId', '')
+
+        cursor = connection.cursor()
+        cursor.execute("UPDATE Incident SET Status='closed' WHERE IncidentId=%s", [iID])
+
+        cursor2 = connection.cursor()
+        cursor2.execute("UPDATE Incident SET DateClosed=CURDATE() WHERE IncidentId=%s", [iID])
+
+        url = '/index/manager/' + str(adminid)
         return HttpResponseRedirect(url)
 
     def form_valid(self, form):
